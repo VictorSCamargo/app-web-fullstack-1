@@ -10,8 +10,8 @@ const criarPostElement = (item) => {
     const itens_post = postElement.querySelectorAll('span')
 
     itens_post[0].innerText = item.username
-    itens_post[0].innerText = item.titulo
-    itens_post[0].innerText = item.texto
+    itens_post[1].innerText = item.titulo
+    itens_post[2].innerText = item.texto
 
     return postElement
 }

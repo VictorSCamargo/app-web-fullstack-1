@@ -8,6 +8,37 @@ export const Register = () => {
     const [username, setUsername] = useState("");
     const [confirmpassword, setConfirmpassword] = useState("");
 
+    async function criaUsuario(event) {
+      event.preventDefault();
+
+      if(password !== confirmpassword) {
+        alert("Senhas nao batem")
+      }
+      else{
+
+        const data_to_send = {
+            "username": username,
+            "password": password
+        };
+
+        const req = {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data_to_send)
+        };
+
+        try {
+          let res = await fetch("http://localhost:3333/users", req);
+
+          let data = await res.json();
+          console.log(data);
+        }
+        catch(e){
+          console.log("Falha ao comunicar com servidor")
+        }
+      }
+    }
+
     return (
         <LayoutComponents> 
                   <form className="login-form">
@@ -43,7 +74,7 @@ export const Register = () => {
         </div>
 
         <div className="container-login-form-btn">
-          <button className="login-form-btn">Login</button>
+          <button className="login-form-btn" onClick={criaUsuario}>Login</button>
         </div>
 
         <div className="text-center">

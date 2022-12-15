@@ -1,4 +1,4 @@
-const UserModel = require('../Models/UserModel'); 
+const UserModel = require('../Models/UserModel.js'); 
 
 const criarUserElement = (item) => {
     // conectar no elemento template

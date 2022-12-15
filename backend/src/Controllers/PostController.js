@@ -1,4 +1,4 @@
-const PostModel = require('../Models/PostModel');
+const PostModel = require('../Models/PostModel.js');
 
 class PostController {
     //criar usuarios

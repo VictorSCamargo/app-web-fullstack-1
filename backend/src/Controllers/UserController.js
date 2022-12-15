@@ -1,18 +1,21 @@
-const UserModel = require('../Models/UserModel');
+const UserModel = require('../Models/UserModel.js');
 
 class UserController {
   //criar usuarios
   async create(req, res) {
+
     try {
       const { username, password } = req.body;
 
       const userAlreadyExists = await UserModel.findOne({ username });
 
       if (userAlreadyExists){
+        console.log("usuario ja existe");
         return res.status(400).json({ message: "Um usuario com esse nome já existe"});
       }
 
       if (!username || !password) {
+        console.log(username, password);
         return res.status(404).json({ message: "Falha ao criar usuario"});
       }
 
@@ -20,6 +23,7 @@ class UserController {
     
       return res.status(200).json(createdUser);
     } catch (error) {
+      console.log("catch")
       return res.status(404).json({ message: "Falha ao criar usuario"});
     }
   }

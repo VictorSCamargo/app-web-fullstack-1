@@ -23,15 +23,18 @@ export const Register = () => {
 
         const req = {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            mode: 'cors',
+            cache: "default",
+            headers: {
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify(data_to_send)
         };
 
         try {
-          let res = await fetch("http://localhost:3333/users", req);
-
-          let data = await res.json();
-          console.log(data);
+          const res = await fetch("http://localhost:3333/users", req);
+          console.log(res)
+          const dados = await res.json()
         }
         catch(e){
           console.log("Falha ao comunicar com servidor")

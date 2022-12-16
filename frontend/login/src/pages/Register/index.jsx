@@ -33,8 +33,9 @@ export const Register = () => {
 
         try {
           const res = await fetch("http://localhost:3333/users", req);
-          console.log(res)
+          
           const dados = await res.json()
+          console.log(dados)
         }
         catch(e){
           console.log("Falha ao comunicar com servidor")

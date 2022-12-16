@@ -1,24 +1,89 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LayoutComponents } from "../../components/LayoutComponents";
 import { PostComponent } from "../../components/PostComponent";
+import { PostList}  from "./postList";
 
-export const Posts = () => {
+const URL_POSTAGENS = "http://localhost:3333/posts"
+
+export const Posts = (props) => {
     const [text, setText] = useState("");
+    const [userLogado, setUserLogado] = useState(verificaUserLogado());
+    const [postagens, setPostagens] = useState(null);
+
+    useEffect(() => {
+      getPostagensDoServidor()
+    });
+
+    function verificaUserLogado() {
+      if(props.userLogado){
+        return props.userLogado
+      }
+      else{
+        return "[nao logado]"
+      }
+    }
+
+    function handleTextChange(event) {
+      setText(event.target.value)
+    }
+
+    async function criarPostagem(event) {
+      event.preventDefault();
+
+      const data_to_send = {
+        "username": userLogado,
+        "titulo": `Postagem`,
+        "texto": text
+      };
+
+      console.log(data_to_send)
+  
+      //ToDo ver como faremos para verificar o login
+      const req = {
+          method: "POST",
+          mode: 'cors',
+          cache: "default",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data_to_send)
+      };
+  
+      try {
+        const res = await fetch(URL_POSTAGENS, req);
+        
+        const dados = await res.json()
+        console.log(dados)
+      }
+      catch(e){
+        console.log("Falha ao comunicar com servidor")
+      }
+    }
+
+    async function getPostagensDoServidor() {
+      try {
+        const res = await fetch(URL_POSTAGENS)
+        const dados = await res.json()
+
+        this.setPostagens(dados.posts);
+      }
+      catch(e){
+        console.log("Falha ao comunicar com servidor")
+      }
+    }
+
     return (
       <div className="post-wrapper">
+        {userLogado}
         <div className="post-input">
         <span className="login-form-title">Faca Um Review!</span>
-        <textarea className="text-send"></textarea>
+        <textarea className="text-send" onChange={handleTextChange}></textarea>
         <div className="container-post-send-btn">
-          <button className="post-send-btn">Enviar</button>
+          <button className="post-send-btn" onClick={criarPostagem}>Enviar</button>
         </div>
         </div>
-            <ul className="post-list">
-                <li><PostComponent></PostComponent></li>
-                <li><PostComponent></PostComponent></li>
-                <li><PostComponent></PostComponent></li>
-            </ul>
+          <PostList posts={postagens}/>
         </div>
   );
 };

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { LayoutComponents } from "../../components/LayoutComponents"
 
@@ -9,6 +9,8 @@ export const Register = () => {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [confirmpassword, setConfirmpassword] = useState("");
+
+    const navigate = useNavigate();
 
     async function criaUsuario(event) {
       event.preventDefault();
@@ -38,8 +40,18 @@ export const Register = () => {
           
           const dados = await res.json()
           
+          console.log(dados)
+
           if(res.status !== 200) {
             alert(dados.message)
+          }
+          else {
+            alert("Usuario criado com sucesso")
+
+            setTimeout(() => {
+              // 👇 Redirects to about page, note the `replace: true`
+              navigate('/login', { replace: true });
+            }, 10);
           }
         }
         catch(e){

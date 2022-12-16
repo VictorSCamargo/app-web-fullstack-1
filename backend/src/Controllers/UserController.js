@@ -11,7 +11,16 @@ class UserController {
       }
 
       UserModel.findOne({ username : username }, function (err, user) {
-        return res.status(200).json(user);
+
+        if(user) {
+          if (user.password === password) {
+            return res.status(200).json(user);
+          }
+        }
+        else {
+          return res.status(404).json({ message: "Usuario nao encontrado na base" })
+        }
+        
       });
     } catch (error) {
       return res.status(404).json({ message: "Falha ao encontrar usuario"})
@@ -24,9 +33,19 @@ class UserController {
     try {
       const { username, password } = req.body;
 
-      const createdUser = await UserModel.create(req.body);
-    
-      return res.status(200).json(createdUser);
+      UserModel.findOne({ username : username }, async function (err, user) {
+
+        if(!user) {
+          const createdUser = await UserModel.create(req.body);
+
+          return res.status(200).json(createdUser);
+        }
+        else {
+          return res.status(400).json({ message: "Usuario com esse nome ja existe"});
+        }
+
+      });
+      
     } catch (error) {
       return res.status(404).json({ message: "Falha ao criar usuario"});
     }

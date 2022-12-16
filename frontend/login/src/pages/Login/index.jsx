@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import { Posts } from '../Posts/index'
 
-const URL_CHECAR_LOGIN = "http://localhost:3333/users"
+const URL_CHECAR_LOGIN = "http://localhost:3333/users/login"
 //const URL_CHECAR_LOGIN = "http://backendweb.victor.sc.vms.ufsc.br:3333/users"
 
 export const Login = () => {
@@ -36,21 +36,24 @@ export const Login = () => {
     };
 
     try {
-      console.log("Chegou")
-      console.log(req.body)
-      const res = await fetch("http://localhost:3333/users/login", req);
+      const res = await fetch(URL_CHECAR_LOGIN, req);
 
       const dados = await res.json()
       // conferir se dados não é null
-      if (dados) {
-        userLogado = username
-        console.log(dados)
+
+      console.log(dados)
+
+      if (dados.username) {
+        userLogado = dados.username
+        console.log(userLogado)
+  
         setTimeout(() => {
           // 👇 Redirects to about page, note the `replace: true`
           navigate('/post', { replace: true, state: {"userLogado": userLogado} });
         }, 1000);
-      } else {
-        console.log('Falha ao logar')
+      }
+      else {
+        alert("Usuario nao encontrado")
       }
     }
     catch(e){

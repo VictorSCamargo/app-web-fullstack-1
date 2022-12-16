@@ -16,24 +16,16 @@ export const Login = () => {
   async function autenticarLogin(event) {
     event.preventDefault();
 
-    const data_to_send = {
-      "username": username,
-      "password": password
-    };
-
-    alert('Logando com usuario generico')
-
     let userLogado = null
 
     //PARA TESTAGEM
     userLogado = username
-
-    setTimeout(() => {
-      // 👇 Redirects to about page, note the `replace: true`
-      navigate('/post', { replace: true, state: {"userLogado": userLogado} });
-    }, 1000);
-
+    alert('Logando com usuario generico')
     
+    const data_to_send = {
+      "username": username,
+      "password": password
+    };
 
     // //ToDo ver como faremos para verificar o login
     // const req = {
@@ -55,6 +47,11 @@ export const Login = () => {
     // catch(e){
     //   console.log("Falha ao comunicar com servidor")
     // }
+
+    setTimeout(() => {
+      // 👇 Redirects to about page, note the `replace: true`
+      navigate('/post', { replace: true, state: {"userLogado": userLogado} });
+    }, 1000);
   }
 
   return (

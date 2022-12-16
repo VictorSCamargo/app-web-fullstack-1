@@ -7,6 +7,14 @@ export const Alterar = () => {
     const [password, setPassword] = useState("");
     const [confirmpassword, setConfirmpassword] = useState("");
 
+    async function requisitarAlteracaoDeSenha(event) {
+      event.preventDefault();
+
+      
+
+
+    }
+
     return (
         <LayoutComponents> 
                   <form className="login-form">

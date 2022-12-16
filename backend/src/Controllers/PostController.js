@@ -6,11 +6,11 @@ class PostController {
         try {
         const { username, titulo, texto } = req.body;
 
-        const postAlreadyExists = await PostModel.findOne({ titulo });
+        // const postAlreadyExists = await PostModel.findOne({ titulo });
 
-        if (postAlreadyExists){
-            return res.status(400).json({ message: "Um post com esse título já existe"});
-        }
+        // if (postAlreadyExists){
+        //     return res.status(400).json({ message: "Um post com esse título já existe"});
+        // }
 
         if (!username || !titulo || !texto) {
             return res.status(400).json({ message: "Usuario, título e corpo do post são obrigatórios"});

@@ -16,6 +16,7 @@ routes.get('/users', UserController.index);
 routes.get('/users/:id', UserController.show);
 routes.put('/users/:id', UserController.update);
 routes.delete('/users/:id', UserController.destroy);
+routes.post('/users/update-password', UserController.update);
 
 routes.post('/posts', PostController.create);
 routes.get('/posts', PostController.index);

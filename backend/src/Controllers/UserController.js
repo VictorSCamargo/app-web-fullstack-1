@@ -83,7 +83,7 @@ class UserController {
   //atualizar um usuario
   async update(req, res) {
     try {
-      const { username, password } = req;
+      const { username, password } = req.body;
 
       let doc = await UserModel.findOneAndUpdate({ username : username }, { password: password }, {
         new: true

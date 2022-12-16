@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { LayoutComponents } from "../../components/LayoutComponents";
 
-const URL_ALTERAR_SENHA = ""
+const URL_ALTERAR_SENHA = "http://localhost:3333/users/update-password"
 
 export const Alterar = () => {
   const [username, setUsername] = useState("");
@@ -18,7 +18,6 @@ export const Alterar = () => {
       alert("Senhas nao batem")
     }
     else{
-
       const data_to_send = {
           "username": username,
           "password": password
@@ -97,7 +96,7 @@ export const Alterar = () => {
         </div>
 
         <div className="container-login-form-btn">
-          <button className="login-form-btn">
+          <button className="login-form-btn" onClick={requisitarAlteracaoDeSenha}>
             Confirmar
           </button>
         </div>

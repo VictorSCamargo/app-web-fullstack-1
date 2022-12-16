@@ -129,7 +129,7 @@ export const Posts = (props) => {
             <button className="post-logout-btn" onClick={deslogarUsuario}>Deslogar</button>
             </div>
             <div className="post-input">
-              <span className="login-form-title">Faca Um Review!</span>
+              <span className="login-form-title">Faca Uma Postagem!</span>
               <textarea className="text-send" onChange={handleTextChange}></textarea>
               <div className="container-post-send-btn">
                 <button className="post-send-btn" onClick={criarPostagem}>Enviar</button>

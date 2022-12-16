@@ -27,6 +27,12 @@ export const Posts = (props) => {
       }
     }, []);
 
+    useEffect(() => {
+      if(userLogado !== null) {
+        getPostagensDoServidor()
+      }
+    }, [userLogado]);
+
     function verificaUserLogado() {
       let logado = null
 
@@ -40,10 +46,10 @@ export const Posts = (props) => {
       }
       catch(e){}
 
-      console.log(logado)
+      //essa funcao nao eh instantanea
       setUserLogado(logado)
 
-      if(userLogado === null) {
+      if(logado === null) {
         deslogarUsuario()
       }
     }

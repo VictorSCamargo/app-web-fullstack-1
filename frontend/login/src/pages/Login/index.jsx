@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { LayoutComponents } from "../../components/LayoutComponents";
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,6 @@ const URL_CHECAR_LOGIN = "http://localhost:3333/users"
 export const Login = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
-  const [userLogado, setUserLogado] = useState(null)
 
   const navigate = useNavigate();
 
@@ -24,12 +23,17 @@ export const Login = () => {
 
     alert('Logando com usuario generico')
 
-    setUserLogado("[testador]")
+    let userLogado = null
+
+    //PARA TESTAGEM
+    userLogado = username
 
     setTimeout(() => {
       // 👇 Redirects to about page, note the `replace: true`
-      navigate('/post', { replace: true });
+      navigate('/post', { replace: true, state: {"userLogado": userLogado} });
     }, 1000);
+
+    
 
     // //ToDo ver como faremos para verificar o login
     // const req = {
@@ -92,12 +96,14 @@ export const Login = () => {
             <Link className="txt2" to="/register">
               Criar conta.
             </Link>
-
-            <Link className="txt2" to="/post" state={{userLogado: "Vitao"}}>
-              Ir para post.
-            </Link>
-
           </div>
+
+          <div className="text-center">
+            <Link className="txt2" to="/alterar">
+              Esqueci minha senha
+            </Link>
+          </div>
+
         </form>
       </LayoutComponents>
     </>

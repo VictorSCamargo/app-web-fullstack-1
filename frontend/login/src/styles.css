@@ -237,7 +237,7 @@ body, html {
   background: -o-linear-gradient(to left, #21d4fd, #b721ff);
   background: -moz-linear-gradient(to left, #21d4fd, #b721ff);
   background: linear-gradient(to left, #21d4fd, #b721ff);
-  margin: 25px;
+  margin: 15px;
 }
 
 .post-logout-btn:hover {

@@ -35,7 +35,10 @@ export const Register = () => {
           const res = await fetch("http://localhost:3333/users", req);
           
           const dados = await res.json()
-          console.log(dados)
+          
+          if(res.status !== 200) {
+            alert(dados.message)
+          }
         }
         catch(e){
           console.log("Falha ao comunicar com servidor")
@@ -50,7 +53,7 @@ export const Register = () => {
         <div className="wrap-input">
           <input
             className={username !== "" ? "has-val input" : "input"}
-            type="email"
+            type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />

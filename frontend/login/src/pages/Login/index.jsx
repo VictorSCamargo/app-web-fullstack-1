@@ -7,6 +7,7 @@ const URL_CHECAR_LOGIN = "http://localhost:3333/users"
 export const Login = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [userLogado, setUserLogado] = useState(null)
 
   async function autenticarLogin(event) {
     event.preventDefault();
@@ -16,26 +17,30 @@ export const Login = () => {
       "password": password
     };
 
-    //ToDo ver como faremos para verificar o login
-    const req = {
-        method: "POST",
-        mode: 'cors',
-        cache: "default",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data_to_send)
-    };
+    alert('Logando com usuario generico')
 
-    try {
-      const res = await fetch(URL_CHECAR_LOGIN, req);
+    setUserLogado("[testador]")
+
+    // //ToDo ver como faremos para verificar o login
+    // const req = {
+    //     method: "POST",
+    //     mode: 'cors',
+    //     cache: "default",
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(data_to_send)
+    // };
+
+    // try {
+    //   const res = await fetch(URL_CHECAR_LOGIN, req);
       
-      const dados = await res.json()
-      console.log(dados)
-    }
-    catch(e){
-      console.log("Falha ao comunicar com servidor")
-    }
+    //   const dados = await res.json()
+    //   console.log(dados)
+    // }
+    // catch(e){
+    //   console.log("Falha ao comunicar com servidor")
+    // }
   }
 
   return (
@@ -45,7 +50,7 @@ export const Login = () => {
         <div className="wrap-input">
           <input
             className={username !== "" ? "has-val input" : "input"}
-            type="email"
+            type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -63,7 +68,7 @@ export const Login = () => {
         </div>
 
         <div className="container-login-form-btn">
-          <button className="login-form-btn">Login</button>
+          <button className="login-form-btn" onClick={autenticarLogin}>Login</button>
         </div>
 
         <div className="text-center">

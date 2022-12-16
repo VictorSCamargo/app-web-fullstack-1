@@ -123,8 +123,10 @@ export const Posts = (props) => {
       if(userLogado !== null) {
         return (
           <div className="post-wrapper">
+            <div className="bemvindo-wrapper">
             <h1 className="login-form-title">Bem vindo, {userLogado}!</h1>
             <button className="post-logout-btn" onClick={deslogarUsuario}>Deslogar</button>
+            </div>
             <div className="post-input">
               <span className="login-form-title">Faca Um Review!</span>
               <textarea className="text-send" onChange={handleTextChange}></textarea>

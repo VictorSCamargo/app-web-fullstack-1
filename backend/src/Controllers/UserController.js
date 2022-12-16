@@ -83,9 +83,12 @@ class UserController {
   //atualizar um usuario
   async update(req, res) {
     try {
-      const { id } = req.params;
+      const { username, password } = req;
 
-      await UserModel.findByIdAndUpdate(id, req.body);
+      let doc = await UserModel.findOneAndUpdate({ username : username }, { password: password }, {
+        new: true
+      });
+      console.log(doc)
 
       return res.status(200).json({ message: "Usuario atualizado"});
     } catch (error) {

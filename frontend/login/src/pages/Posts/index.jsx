@@ -4,6 +4,7 @@ import { LayoutComponents } from "../../components/LayoutComponents";
 import { PostList}  from "./postList";
 
 const URL_POSTAGENS = "http://localhost:3333/posts"
+//const URL_POSTAGENS = "http://backendweb.victor.sc.vms.ufsc.br:3333/posts"
 
 export const Posts = (props) => {
     const [text, setText] = useState("");

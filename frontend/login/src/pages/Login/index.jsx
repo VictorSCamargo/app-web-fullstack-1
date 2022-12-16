@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import { Posts } from '../Posts/index'
 
 const URL_CHECAR_LOGIN = "http://localhost:3333/users"
+//const URL_CHECAR_LOGIN = "http://backendweb.victor.sc.vms.ufsc.br:3333/users"
 
 export const Login = () => {
   const [password, setPassword] = useState("");

@@ -1,29 +1,33 @@
 const UserModel = require('../Models/UserModel.js');
 
 class UserController {
+
+  async verifyUser(req, res) {
+    try {
+      const { username, password } = req.body;
+
+      if (!username || !password) {
+        return res.status(404).json({ message: "Dados de cadastro incorretos"});
+      }
+
+      UserModel.findOne({ username : username }, function (err, user) {
+        return res.status(200).json(user);
+      });
+    } catch (error) {
+      return res.status(404).json({ message: "Falha ao encontrar usuario"})
+    }
+  }
+
   //criar usuarios
   async create(req, res) {
 
     try {
       const { username, password } = req.body;
 
-      const userAlreadyExists = await UserModel.findOne({ username });
-
-      if (userAlreadyExists){
-        console.log("usuario ja existe");
-        return res.status(400).json({ message: "Um usuario com esse nome já existe"});
-      }
-
-      if (!username || !password) {
-        console.log(username, password);
-        return res.status(404).json({ message: "Falha ao criar usuario"});
-      }
-
       const createdUser = await UserModel.create(req.body);
     
       return res.status(200).json(createdUser);
     } catch (error) {
-      console.log("catch")
       return res.status(404).json({ message: "Falha ao criar usuario"});
     }
   }

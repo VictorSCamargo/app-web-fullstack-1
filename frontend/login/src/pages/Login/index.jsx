@@ -17,41 +17,44 @@ export const Login = () => {
     event.preventDefault();
 
     let userLogado = null
-
-    //PARA TESTAGEM
-    userLogado = username
-    alert('Logando com usuario generico')
     
     const data_to_send = {
       "username": username,
       "password": password
     };
 
-    // //ToDo ver como faremos para verificar o login
-    // const req = {
-    //     method: "POST",
-    //     mode: 'cors',
-    //     cache: "default",
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(data_to_send)
-    // };
+    //Faz a requisição para ver se o usuario existe
+    const req = {
+        method: "POST",
+        mode: 'cors',
+        cache: "default",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data_to_send)
+    };
 
-    // try {
-    //   const res = await fetch(URL_CHECAR_LOGIN, req);
-      
-    //   const dados = await res.json()
-    //   console.log(dados)
-    // }
-    // catch(e){
-    //   console.log("Falha ao comunicar com servidor")
-    // }
+    try {
+      console.log("Chegou")
+      console.log(req.body)
+      const res = await fetch("http://localhost:3333/users/login", req);
 
-    setTimeout(() => {
-      // 👇 Redirects to about page, note the `replace: true`
-      navigate('/post', { replace: true, state: {"userLogado": userLogado} });
-    }, 1000);
+      const dados = await res.json()
+      // conferir se dados não é null
+      if (dados) {
+        userLogado = username
+        console.log(dados)
+        setTimeout(() => {
+          // 👇 Redirects to about page, note the `replace: true`
+          navigate('/post', { replace: true, state: {"userLogado": userLogado} });
+        }, 1000);
+      } else {
+        console.log('Falha ao logar')
+      }
+    }
+    catch(e){
+      console.log("Falha ao comunicar com servidor")
+    }
   }
 
   return (

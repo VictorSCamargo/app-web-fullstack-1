@@ -77,11 +77,11 @@ export const Register = () => {
             value={confirmpassword}
             onChange={(e) => setConfirmpassword(e.target.value)}
           />
-          <span className="focus-input" data-placeholder="Comfirm Password"></span>
+          <span className="focus-input" data-placeholder="Confirm Password"></span>
         </div>
 
         <div className="container-login-form-btn">
-          <button className="login-form-btn" onClick={criaUsuario}>Login</button>
+          <button className="login-form-btn" onClick={criaUsuario}>Cadastrar</button>
         </div>
 
         <div className="text-center">

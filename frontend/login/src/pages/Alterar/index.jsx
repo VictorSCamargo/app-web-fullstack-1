@@ -1,24 +1,30 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { LayoutComponents } from "../../components/LayoutComponents"
-
+import { LayoutComponents } from "../../components/LayoutComponents";
 
 export const Alterar = () => {
-    const [password, setPassword] = useState("");
-    const [confirmpassword, setConfirmpassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmpassword] = useState("");
 
-    async function requisitarAlteracaoDeSenha(event) {
-      event.preventDefault();
+  async function requisitarAlteracaoDeSenha(event) {
+    event.preventDefault();
+  }
 
-      
-
-
-    }
-
-    return (
-        <LayoutComponents> 
-                  <form className="login-form">
+  return (
+    <LayoutComponents>
+      <form className="login-form">
         <span className="login-form-title">Alterar Senha</span>
+        <div className="wrap-input">
+          <input
+            className={username !== "" ? "has-val input" : "input"}
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <span className="focus-input" data-placeholder="Username"></span>
+        </div>
+
         <div className="wrap-input">
           <input
             className={password !== "" ? "has-val input" : "input"}
@@ -36,11 +42,16 @@ export const Alterar = () => {
             value={confirmpassword}
             onChange={(e) => setConfirmpassword(e.target.value)}
           />
-          <span className="focus-input" data-placeholder="Comfirm Password"></span>
+          <span
+            className="focus-input"
+            data-placeholder="Confirm Password"
+          ></span>
         </div>
 
         <div className="container-login-form-btn">
-          <button className="login-form-btn">Login</button>
+          <button className="login-form-btn">
+            Confirmar
+          </button>
         </div>
 
         <div className="text-center">
@@ -51,6 +62,6 @@ export const Alterar = () => {
           </Link>
         </div>
       </form>
-        </LayoutComponents>
-    )
-}
+    </LayoutComponents>
+  );
+};

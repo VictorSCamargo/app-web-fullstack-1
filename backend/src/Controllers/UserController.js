@@ -85,12 +85,19 @@ class UserController {
     try {
       const { username, password } = req.body;
 
-      let doc = await UserModel.findOneAndUpdate({ username : username }, { password: password }, {
-        new: true
-      });
-      console.log(doc)
+      UserModel.findOne({ username : username }, function (err, user) {
 
-      return res.status(200).json({ message: "Usuario atualizado"});
+        if(user) {
+          UserModel.findOneAndUpdate({ username : username }, { password: password }, {
+            new: true
+          });
+          return res.status(200).json({ message: "Usuario atualizado"});
+        }
+        else {
+          return res.status(404).json({ message: "Usuario nao encontrado na base" })
+        }
+        
+      });
     } catch (error) {
       return res.status(404).json({ message: "Falha ao atualizar usuario"});
     }

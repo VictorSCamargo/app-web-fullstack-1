@@ -220,6 +220,30 @@ body, html {
   cursor: pointer;
 }
 
+.post-logout-btn {
+  font-size: 15px;
+  border: none;
+  border-radius: 15px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 25px;
+  background: #6a7dfe;
+  background: -webkit-linear-gradient(to left, #21d4fd, #b721ff);
+  background: -o-linear-gradient(to left, #21d4fd, #b721ff);
+  background: -moz-linear-gradient(to left, #21d4fd, #b721ff);
+  background: linear-gradient(to left, #21d4fd, #b721ff);
+  margin: 25px;
+}
+
+.post-logout-btn:hover {
+  cursor: pointer;
+}
+
 .text-send{
   font-size: 15px;
   border: none;

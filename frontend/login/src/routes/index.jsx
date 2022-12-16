@@ -6,6 +6,9 @@ import { Posts } from '../pages/Posts'
 
 
 export const AppRouter = () => {
+
+    //<Route path='/post' exact element={<Posts/>} />
+
     return (
         <Router>
             <Routes>

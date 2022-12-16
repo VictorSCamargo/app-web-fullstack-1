@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LayoutComponents } from "../../components/LayoutComponents";
+import { useNavigate } from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import { Posts } from '../Posts/index'
 
 const URL_CHECAR_LOGIN = "http://localhost:3333/users"
 
@@ -8,6 +11,8 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [userLogado, setUserLogado] = useState(null)
+
+  const navigate = useNavigate();
 
   async function autenticarLogin(event) {
     event.preventDefault();
@@ -20,6 +25,11 @@ export const Login = () => {
     alert('Logando com usuario generico')
 
     setUserLogado("[testador]")
+
+    setTimeout(() => {
+      // 👇 Redirects to about page, note the `replace: true`
+      navigate('/post', { replace: true });
+    }, 1000);
 
     // //ToDo ver como faremos para verificar o login
     // const req = {
@@ -44,41 +54,52 @@ export const Login = () => {
   }
 
   return (
-    <LayoutComponents>
-      <form className="login-form">
-        <span className="login-form-title">Bem Vindo!</span>
-        <div className="wrap-input">
-          <input
-            className={username !== "" ? "has-val input" : "input"}
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <span className="focus-input" data-placeholder="Username"></span>
-        </div>
+    <>
+      <Routes>
+          <Route path='/post' element={<Posts userLogado={"Vitao"}/>} />
+      </Routes>
 
-        <div className="wrap-input">
-          <input
-            className={password !== "" ? "has-val input" : "input"}
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <span className="focus-input" data-placeholder="Password"></span>
-        </div>
+      <LayoutComponents>
+        <form className="login-form">
+          <span className="login-form-title">Bem Vindo!</span>
+          <div className="wrap-input">
+            <input
+              className={username !== "" ? "has-val input" : "input"}
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <span className="focus-input" data-placeholder="Username"></span>
+          </div>
 
-        <div className="container-login-form-btn">
-          <button className="login-form-btn" onClick={autenticarLogin}>Login</button>
-        </div>
+          <div className="wrap-input">
+            <input
+              className={password !== "" ? "has-val input" : "input"}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <span className="focus-input" data-placeholder="Password"></span>
+          </div>
 
-        <div className="text-center">
-          <span className="txt1">Não possui conta?</span>
+          <div className="container-login-form-btn">
+            <button className="login-form-btn" onClick={autenticarLogin}>Login</button>
+          </div>
 
-          <Link className="txt2" to="/register">
-            Criar conta.
-          </Link>
-        </div>
-      </form>
-    </LayoutComponents>
+          <div className="text-center">
+            <span className="txt1">Não possui conta?</span>
+
+            <Link className="txt2" to="/register">
+              Criar conta.
+            </Link>
+
+            <Link className="txt2" to="/post" state={{userLogado: "Vitao"}}>
+              Ir para post.
+            </Link>
+
+          </div>
+        </form>
+      </LayoutComponents>
+    </>
   );
 };

@@ -1,15 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { LayoutComponents } from "../../components/LayoutComponents";
-import { PostComponent } from "../../components/PostComponent";
 import { PostList}  from "./postList";
 
 const URL_POSTAGENS = "http://localhost:3333/posts"
 
 export const Posts = (props) => {
     const [text, setText] = useState("");
-    const [userLogado, setUserLogado] = useState(verificaUserLogado());
+    const [userLogado, setUserLogado] = useState(null);
     const [postagens, setPostagens] = useState(null);
+
+    const location = useLocation()
+    const navigate = useNavigate()
 
     const dataExemplo = [
       { username: "victor", titulo: "Postagem", texto: "Postagem 1" },
@@ -18,15 +20,31 @@ export const Posts = (props) => {
     ];
 
     useEffect(() => {
-      getPostagensDoServidor()
+      verificaUserLogado()
+
+      if(userLogado !== null) {
+        getPostagensDoServidor()
+      }
     }, []);
 
     function verificaUserLogado() {
+      let logado = null
+
       if(props.userLogado){
-        return props.userLogado
+        logado = props.userLogado
       }
-      else{
-        return null
+      try {
+        if(location.state.userLogado){
+          logado = location.state.userLogado
+        }
+      }
+      catch(e){}
+
+      console.log(logado)
+      setUserLogado(logado)
+
+      if(userLogado === null) {
+        deslogarUsuario()
       }
     }
 
@@ -87,17 +105,44 @@ export const Posts = (props) => {
       }
     }
 
+    function deslogarUsuario() {
+      setUserLogado(null)
+      setTimeout(() => {
+        // 👇 Redirects to about page, note the `replace: true`
+        navigate('/login', { replace: true });
+      }, 3000);
+    }
+
+    function geraPaginaSeUserEstiverLogado() {
+      if(userLogado !== null) {
+        return (
+          <div className="post-wrapper">
+            <h1 className="login-form-title">Bem vindo, {userLogado}!</h1>
+            <button className="post-logout-btn" onClick={deslogarUsuario}>Deslogar</button>
+            <div className="post-input">
+              <span className="login-form-title">Faca Um Review!</span>
+              <textarea className="text-send" onChange={handleTextChange}></textarea>
+              <div className="container-post-send-btn">
+                <button className="post-send-btn" onClick={criarPostagem}>Enviar</button>
+              </div>
+            </div>
+            <PostList posts={postagens}/>
+          </div>
+        );
+      }
+      else {
+        return (
+          <div className="post-wrapper">
+            <h1 className="login-form-title">Autentique-se!</h1>
+          </div>
+        )
+      }
+    }
+
     return (
-      <div className="post-wrapper">
-        <div className="post-input">
-        <span className="login-form-title">Faca Um Review!</span>
-        <textarea className="text-send" onChange={handleTextChange}></textarea>
-        <div className="container-post-send-btn">
-          <button className="post-send-btn" onClick={criarPostagem}>Enviar</button>
-        </div>
-        </div>
-          <PostList posts={postagens}/>
-        </div>
+      <>
+        {geraPaginaSeUserEstiverLogado()}
+      </> 
   );
 };
 

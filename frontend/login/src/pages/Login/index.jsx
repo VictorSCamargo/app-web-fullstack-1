@@ -53,7 +53,7 @@ export const Login = () => {
         }, 1000);
       }
       else {
-        alert("Usuario nao encontrado")
+        alert(dados.message)
       }
     }
     catch(e){

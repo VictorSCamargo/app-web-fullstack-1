@@ -13,8 +13,12 @@ class UserController {
       UserModel.findOne({ username : username }, function (err, user) {
 
         if(user) {
+          console.log(user)
           if (user.password === password) {
             return res.status(200).json(user);
+          }
+          else {
+            return res.status(400).json({ message: "Senha incorreta" });
           }
         }
         else {

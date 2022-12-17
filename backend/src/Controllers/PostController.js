@@ -69,6 +69,8 @@ class PostController {
   //deletar um usuario
     async destroy (req, res) {
         try {
+            const { id } = req.params;
+            
             const postDeleted = await PostModel.findByIdAndDelete(id);
 
             if(!postDeleted){

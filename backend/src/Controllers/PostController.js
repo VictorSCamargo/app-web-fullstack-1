@@ -1,16 +1,11 @@
 const PostModel = require('../Models/PostModel.js');
 
 class PostController {
-    //criar usuarios
+
+    // criação de posts
     async create(req, res) {
         try {
         const { username, titulo, texto } = req.body;
-
-        // const postAlreadyExists = await PostModel.findOne({ titulo });
-
-        // if (postAlreadyExists){
-        //     return res.status(400).json({ message: "Um post com esse título já existe"});
-        // }
 
         if (!username || !titulo || !texto) {
             return res.status(400).json({ message: "Usuario, título e corpo do post são obrigatórios"});
@@ -24,7 +19,7 @@ class PostController {
         }
     }
 
-  //listar usuarios
+    // listagem de todos os posts
     async index(req, res) {
         try {
         const posts = await PostModel.find();
@@ -35,7 +30,7 @@ class PostController {
         }
     }
 
-  //mostrar um usuario especifico
+    // mostrar um post especifico
     async show(req, res) {
         try {
         const { id } = req.params;
@@ -53,7 +48,7 @@ class PostController {
         }
     }
 
-  //atualizar um usuario
+    // atualização de posts
     async update(req, res) {
         try {
             const { id } = req.params;
@@ -66,11 +61,11 @@ class PostController {
         }
     } 
 
-  //deletar um usuario
+    // exclusão de posts
     async destroy (req, res) {
         try {
             const { id } = req.params;
-            
+
             const postDeleted = await PostModel.findByIdAndDelete(id);
 
             if(!postDeleted){

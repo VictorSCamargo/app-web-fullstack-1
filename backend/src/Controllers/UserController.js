@@ -112,7 +112,7 @@ class UserController {
   
   }
 
-  //deletar um usuario
+  //exclusão de um usuario
   async destroy (req, res) {
     try {
       const { id } = req.params;

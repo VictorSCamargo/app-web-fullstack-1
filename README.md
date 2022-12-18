@@ -5,7 +5,9 @@ Realizado durante a disciplina de programação web do cursos de Sistemas de Inf
 Prototipo de forum para compartilhamento de postagens, semelhante ao Twitter, implementando algumas funcionalidades "CRUD" (Create, Read, Update, Delete).
 
 Vídeo de apresentação do sistema e do trabalho realizado: https://youtu.be/cDKEfB4eEh8
+
 Link para o programa: http://backendweb.victor.sc.vms.ufsc.br:3000/login
+
 Atenção: programa acessível apenas por meio de VPN UFSC corretamente conectado e durante a duração da disciplina de Programação Web.
 
 Utiliza-se para o frontend: ReactJS.

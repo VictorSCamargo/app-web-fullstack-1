@@ -1,72 +1,57 @@
-import { Link, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { LayoutComponents } from "../../components/LayoutComponents";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
-import { Posts } from '../Posts/index'
+import { Posts } from '../Posts/Posts'
+import { UserFetchMethods } from "../../components/UserFetchMethods/UserFetchMethods";
 
 const URL_CHECAR_LOGIN = "http://localhost:3333/users/login"
-//const URL_CHECAR_LOGIN = "http://backendweb.victor.sc.vms.ufsc.br:3333/users"
 
 export const Login = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
+  const userFetchMethods = new UserFetchMethods();
 
   async function autenticarLogin(event) {
     event.preventDefault();
 
-    let userLogado = null
+    console.log("autenticarLogin...")
     
     const data_to_send = {
       "username": username,
       "password": password
     };
 
-    //Faz a requisição para ver se o usuario existe
-    const req = {
-        method: "POST",
-        mode: 'cors',
-        cache: "default",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data_to_send)
-    };
+    console.log("Dados de login:", data_to_send);
 
-    try {
-      const res = await fetch(URL_CHECAR_LOGIN, req);
+    let response = await userFetchMethods.validateLogin(data_to_send);
 
-      const dados = await res.json()
-      // conferir se dados não é null
+    console.log("Resposta:", response)
 
-      console.log(dados)
-
-      if (dados.username) {
-        userLogado = dados.username
-        console.log(userLogado)
+    if(response) {
   
+      const data_received = await response.json();
+      console.log("Dados da resposta:", data_received);
+
+      if (data_received.username) {
+
+        console.log("User logou:", data_received.username);
+        console.log("Redirecionando para postagens...");
+
         setTimeout(() => {
-          // 👇 Redirects to about page, note the `replace: true`
-          navigate('/post', { replace: true, state: {"userLogado": userLogado} });
-        }, 1000);
+          navigate('/post', { replace: true, state: {"userLogado": data_received.username} });
+        }, 500);
       }
       else {
-        alert(dados.message)
+        alert(data_received.message);
       }
-    }
-    catch(e){
-      console.log("Falha ao comunicar com servidor")
     }
   }
 
   return (
     <>
-      <Routes>
-          <Route path='/post' element={<Posts userLogado={"Vitao"}/>} />
-      </Routes>
-
       <LayoutComponents>
         <form className="login-form">
           <span className="login-form-title">Bem Vindo!</span>

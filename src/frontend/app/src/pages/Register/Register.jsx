@@ -3,7 +3,6 @@ import { useState } from "react";
 import { LayoutComponents } from "../../components/LayoutComponents"
 
 const URL_REGISTRAR_USUARIO = "http://localhost:3333/users"
-//const URL_REGISTRAR_USUARIO = "http://backendweb.victor.sc.vms.ufsc.br:3333/users"
 
 export const Register = () => {
     const [password, setPassword] = useState("");

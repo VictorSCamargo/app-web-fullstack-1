@@ -1,4 +1,4 @@
-import { AppRouter } from './routes';
+import { AppRouter } from './routes/AppRouter';
 import './styles.css'
 
 export const App = () => {

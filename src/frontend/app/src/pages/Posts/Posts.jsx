@@ -4,7 +4,6 @@ import { LayoutComponents } from "../../components/LayoutComponents";
 import { PostList}  from "./postList";
 
 const URL_POSTAGENS = "http://localhost:3333/posts"
-//const URL_POSTAGENS = "http://backendweb.victor.sc.vms.ufsc.br:3333/posts"
 
 export const Posts = (props) => {
     const [text, setText] = useState("");
@@ -117,7 +116,7 @@ export const Posts = (props) => {
       setTimeout(() => {
         // 👇 Redirects to about page, note the `replace: true`
         navigate('/login', { replace: true });
-      }, 3000);
+      }, 2000);
     }
 
     function geraPaginaSeUserEstiverLogado() {
@@ -142,7 +141,7 @@ export const Posts = (props) => {
       else {
         return (
           <div className="post-wrapper">
-            <h1 className="login-form-title">Autentique-se!</h1>
+            <h1 className="login-form-title">Autentique-se para ver as postagens!</h1>
           </div>
         )
       }

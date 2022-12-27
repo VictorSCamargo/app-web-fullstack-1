@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { LayoutComponents } from "../../components/LayoutComponents";
+import { LayoutComponents, CustomWrapper, FormInputLine, PageContainer } from "../../components/LayoutComponents/LayoutComponents";
 import { Link, useNavigate } from 'react-router-dom';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
-import { Posts } from '../Posts/Posts'
 import { UserFetchMethods } from "../../components/UserFetchMethods/UserFetchMethods";
 
-const URL_CHECAR_LOGIN = "http://localhost:3333/users/login"
+const URL_USERS = "http://localhost:3333/users/"
 
 export const Login = () => {
   const [password, setPassword] = useState("");
@@ -13,6 +11,25 @@ export const Login = () => {
 
   const navigate = useNavigate();
   const userFetchMethods = new UserFetchMethods();
+
+  // async function testarMetodosFetch(event) {
+  //   event.preventDefault();
+
+  //   console.log("testarMetodosFetch...")
+
+  //   const data_to_send = {
+  //     "username": "TESTE",
+  //     "password": "TESTE"
+  //   };
+
+  //   console.log("GET")
+  //   console.log(await (await UserFetchMethods.get(URL_USERS)).json())
+
+  //   console.log("POST")
+  //   console.log(await (await UserFetchMethods.post(URL_USERS, data_to_send)).json())
+
+  //   console.log("DELETE")
+  // }
 
   async function autenticarLogin(event) {
     event.preventDefault();
@@ -26,7 +43,7 @@ export const Login = () => {
 
     console.log("Dados de login:", data_to_send);
 
-    let response = await userFetchMethods.validateLogin(data_to_send);
+    let response = await UserFetchMethods.post(URL_USERS + "login", data_to_send);
 
     console.log("Resposta:", response)
 
@@ -53,37 +70,32 @@ export const Login = () => {
   return (
     <>
       <LayoutComponents>
-        <form className="login-form">
-          <span className="login-form-title">Bem Vindo!</span>
-          <div className="wrap-input">
-            <input
-              className={username !== "" ? "has-val input" : "input"}
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <span className="focus-input" data-placeholder="Username"></span>
-          </div>
+        <form className="login-form" onSubmit={autenticarLogin}>
 
-          <div className="wrap-input">
-            <input
-              className={password !== "" ? "has-val input" : "input"}
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <span className="focus-input" data-placeholder="Password"></span>
-          </div>
+          <span className="login-form-title">Bem Vindo!</span>
+
+          <FormInputLine
+            inputLabel="Username"
+            variableName="usernameInput"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
+          <FormInputLine
+            inputLabel="Password"
+            variableName="passwordInput"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
           <div className="container-login-form-btn">
-            <button className="login-form-btn" onClick={autenticarLogin}>Login</button>
+            <button className="login-form-btn" type="submit">Login</button>
           </div>
 
           <div className="text-center">
             <span className="txt1">Não possui conta?</span>
-
             <Link className="txt2" to="/register">
-              Criar conta.
+              Criar conta
             </Link>
           </div>
 

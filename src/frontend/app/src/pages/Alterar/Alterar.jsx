@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { LayoutComponents } from "../../components/LayoutComponents";
+import { LayoutComponents } from "../../components/LayoutComponents/LayoutComponents";
 
 const URL_ALTERAR_SENHA = "http://localhost:3333/users/update-password"
 

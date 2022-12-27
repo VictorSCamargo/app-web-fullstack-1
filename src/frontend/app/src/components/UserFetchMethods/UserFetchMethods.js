@@ -1,13 +1,9 @@
-import React from "react";
-
-const URL_USERS_BACKEND = "http://localhost:3333/users"
 
 export class UserFetchMethods  {
     constructor() {
-        this.url_backend = URL_USERS_BACKEND
     }
 
-    async validateLogin(data) {
+    static async post(url, object) {
         const requestOptions = {
             method: "POST",
             mode: 'cors',
@@ -15,28 +11,11 @@ export class UserFetchMethods  {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
-        };
-
-        try {
-            const response = await fetch(`${this.url_backend}/login`, requestOptions);
-            return response;
-        }
-        catch(e) {
-            console.log("Fetch falhou.", e)
-            return null;
-        }
-    }
-
-    async post(data) {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" },
-            body: JSON.stringify(data)
+            body: JSON.stringify(object)
         };
     
         try {
-            const response = await fetch(this.url_backend, requestOptions);
+            const response = await fetch(url, requestOptions);
             return response;
         }
         catch(e) {
@@ -45,9 +24,50 @@ export class UserFetchMethods  {
         }
     }
 
-    async get() {
+    static async get(url) {
         try {    
-            const response = await fetch(this.url_backend);
+            const response = await fetch(url);
+            return response;
+        }
+        catch(e) {
+            console.log("Fetch falhou.", e)
+            return null;
+        }
+    }
+
+    static async delete(url) {
+        const requestOptions = {
+            method: "DELETE",
+            mode: 'cors',
+            cache: "default",
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        };
+    
+        try {
+            const response = await fetch(url, requestOptions);
+            return response;
+        }
+        catch(e) {
+            console.log("Fetch falhou.", e)
+            return null;
+        }
+    }
+
+    static async put(url, object) {
+        const requestOptions = {
+            method: "PUT",
+            mode: 'cors',
+            cache: "default",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(object)
+        };
+    
+        try {
+            const response = await fetch(url, requestOptions);
             return response;
         }
         catch(e) {

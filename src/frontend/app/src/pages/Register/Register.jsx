@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { LayoutComponents } from "../../components/LayoutComponents"
+import { LayoutComponents } from "../../components/LayoutComponents/LayoutComponents"
 
 const URL_REGISTRAR_USUARIO = "http://localhost:3333/users"
 
@@ -13,6 +13,8 @@ export const Register = () => {
 
     async function criaUsuario(event) {
       event.preventDefault();
+
+      console.log("criarUsuario...")
 
       if(password !== confirmpassword) {
         alert("Senhas nao batem")
@@ -47,10 +49,7 @@ export const Register = () => {
           else {
             alert("Usuario criado com sucesso")
 
-            setTimeout(() => {
-              // 👇 Redirects to about page, note the `replace: true`
-              navigate('/login', { replace: true });
-            }, 10);
+            navigate('/login', { replace: true });
           }
         }
         catch(e){

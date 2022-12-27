@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { LayoutComponents } from "../../components/LayoutComponents";
+import { LayoutComponents } from "../../components/LayoutComponents/LayoutComponents";
 import { PostList}  from "./postList";
 
 const URL_POSTAGENS = "http://localhost:3333/posts"

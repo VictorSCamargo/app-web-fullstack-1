@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LayoutComponents, CustomWrapper, FormInputLine, PageContainer } from "../../components/LayoutComponents/LayoutComponents";
+import { CustomWrapper, FormInputLine, PageContainer } from "../../components/LayoutComponents/LayoutComponents";
 import { Link, useNavigate } from 'react-router-dom';
 import { FetchMethods } from "../../components/FetchMethods/FetchMethods";
 
@@ -48,7 +48,6 @@ export const Login = () => {
   }
 
   return (
-    <>
     <PageContainer>
       <CustomWrapper>
         <form className="login-form" onSubmit={autenticarLogin}>
@@ -90,6 +89,5 @@ export const Login = () => {
           </form>
       </CustomWrapper>
     </PageContainer>
-    </>
   );
 };

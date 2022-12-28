@@ -4,24 +4,15 @@ import { PostComponent } from "../../components/PostComponent";
 export const PostList = (props) => {
 
     function criarLinhas() {
-        let linhas_construidas = <li>[Vazio]</li>
 
-        let key_number = 0;
+        let postsOrdenados = props.posts.slice(0).reverse();
 
-        function atribuiKeyGenerica() {
-            key_number += 1;
-            return key_number
-        }
-
-        if(props.posts) {
-
-            let postsOrdenados = props.posts.slice(0).reverse();
-
-            linhas_construidas = postsOrdenados.map(postagem => (
-                <li key={atribuiKeyGenerica()}><PostComponent username={postagem.username} texto={postagem.texto}></PostComponent></li>
-                )
+        const linhas_construidas = postsOrdenados.map(postagem => (
+            <li key={postagem._id}>
+                <PostComponent username={postagem.username} texto={postagem.texto}></PostComponent>
+            </li>
             )
-        }
+        )
 
         return linhas_construidas;
     }
@@ -29,7 +20,11 @@ export const PostList = (props) => {
     return (
         <>
             <ul className="post-list">
-                {criarLinhas()}
+                {props.posts ? (
+                    criarLinhas()
+                ) : (
+                    <li key={"0"}><PostComponent username={"[servidor]"} texto={"Nenhuma postagem encontrada!"}></PostComponent></li>
+                )}
             </ul>
         </>
     );

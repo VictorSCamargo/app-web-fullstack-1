@@ -1,7 +1,7 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { LayoutComponents } from "../../components/LayoutComponents/LayoutComponents";
-import { PostList}  from "./postList";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { PostList }  from "./postList";
+import { FetchMethods } from "../../components/FetchMethods/FetchMethods";
 
 const URL_POSTAGENS = "http://localhost:3333/posts"
 
@@ -13,58 +13,49 @@ export const Posts = (props) => {
     const location = useLocation()
     const navigate = useNavigate()
 
-    const dataExemplo = [
-      { username: "victor", titulo: "Postagem", texto: "Postagem 1" },
-      { username: "joao", titulo: "Postagem", texto: "Postagem 2" },
-      { username: "Ola", titulo: "Postagem", texto: "Postagem 3" }
-    ];
+    const deslogarUsuario = useCallback(() => {
+      setUserLogado(null)
+
+      setTimeout(() => {
+        navigate('/login', { replace: true });
+      }, 2000);
+    }, [navigate])
+
+    const verificaUserLogado = useCallback(() => {
+      let logado = null;
+
+      if(props.userLogado){
+        logado = props.userLogado;
+      }
+      else {
+        try {
+          if(location.state.userLogado){
+            logado = location.state.userLogado;
+          }
+        }
+        catch(e){
+          console.log("Nenhum usuario detectado.")
+        }
+      }
+
+      if (logado) {
+        setUserLogado(logado);
+        getPostagensDoServidor();
+      }
+      else{
+        deslogarUsuario();
+      }
+
+    }, [deslogarUsuario, location.state, props.userLogado])
 
     useEffect(() => {
       verificaUserLogado()
-
-      if(userLogado !== null) {
-        getPostagensDoServidor()
-      }
-    }, []);
-
-    useEffect(() => {
-      if(userLogado !== null) {
-        getPostagensDoServidor()
-      }
-    }, [userLogado]);
-
-    function verificaUserLogado() {
-      let logado = null
-
-      if(props.userLogado){
-        logado = props.userLogado
-      }
-      try {
-        if(location.state.userLogado){
-          logado = location.state.userLogado
-        }
-      }
-      catch(e){}
-
-      //essa funcao nao eh instantanea
-      setUserLogado(logado)
-
-      if(logado === null) {
-        deslogarUsuario()
-      }
-    }
-
-    function handleTextChange(event) {
-      setText(event.target.value)
-    }
+    }, [verificaUserLogado]);
 
     async function criarPostagem(event) {
       event.preventDefault();
 
-      if(userLogado === null) {
-        alert("Realize login antes de fazer postagens!")
-        return
-      }
+      console.log("criarPostagem...")
 
       const data_to_send = {
         "username": userLogado,
@@ -72,92 +63,61 @@ export const Posts = (props) => {
         "texto": text
       };
 
-      console.log(data_to_send)
+      console.log("Dados de envio:", data_to_send);
   
-      //ToDo ver como faremos para verificar o login
-      const req = {
-          method: "POST",
-          mode: 'cors',
-          cache: "default",
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data_to_send)
-      };
+      const response = await FetchMethods.post(URL_POSTAGENS, data_to_send);
+
+      console.log("Resposta:", response)
   
-      try {
-        const res = await fetch(URL_POSTAGENS, req);
-        
-        const dados = await res.json()
-        console.log(dados)
+      if(response) { 
+        const dados = await response.json()
+        console.log("Dados da resposta:", dados);
+
         getPostagensDoServidor()
-      }
-      catch(e){
-        console.log("Falha ao comunicar com servidor")
       }
     }
 
     async function getPostagensDoServidor() {
-      try {
-        const res = await fetch(URL_POSTAGENS)
-        const dados = await res.json()
 
-        console.log(dados.posts)
+      console.log("getPostagensDoServidor...")
+
+      const response = await FetchMethods.get(URL_POSTAGENS)
+
+      if(response) {
+        const dados = await response.json()
 
         setPostagens(dados.posts);
-      }
-      catch(e){
-        console.log("Falha ao comunicar com servidor")
-      }
-    }
-
-    function deslogarUsuario() {
-      setUserLogado(null)
-      setTimeout(() => {
-        // 👇 Redirects to about page, note the `replace: true`
-        navigate('/login', { replace: true });
-      }, 2000);
-    }
-
-    function geraPaginaSeUserEstiverLogado() {
-      if(userLogado !== null) {
-        return (
-          <div className="post-wrapper">
-            <div className="bemvindo-wrapper">
-            <h1 className="login-form-title">Bem vindo, {userLogado}!</h1>
-            <button className="post-logout-btn" onClick={deslogarUsuario}>Deslogar</button>
-            </div>
-            <div className="post-input">
-              <span className="login-form-title">Faca Uma Postagem!</span>
-              <textarea className="text-send" onChange={handleTextChange}></textarea>
-              <div className="container-post-send-btn">
-                <button className="post-send-btn" onClick={criarPostagem}>Enviar</button>
-              </div>
-            </div>
-            <PostList posts={postagens}/>
-          </div>
-        );
-      }
-      else {
-        return (
-          <div className="post-wrapper">
-            <h1 className="login-form-title">Autentique-se para ver as postagens!</h1>
-          </div>
-        )
       }
     }
 
     return (
       <>
-        {geraPaginaSeUserEstiverLogado()}
+        {userLogado === null ? (
+          <div className="post-wrapper">
+            <h1 className="login-form-title">Autentique-se para ver as postagens!</h1>
+          </div>
+        ) : (
+          <div className="post-wrapper">
+
+            <div className="bemvindo-wrapper">
+              <h1 className="login-form-title">Bem vindo, {userLogado}!</h1>
+              <button className="post-logout-btn" onClick={deslogarUsuario}>Deslogar</button>
+            </div>
+
+            <div className="post-input">
+              <span className="login-form-title">Faça Uma Postagem!</span>
+              <textarea className="text-send" onChange={(e) => setText(e.target.value)}></textarea>
+
+              <div className="container-post-send-btn">
+                <button className="post-send-btn" onClick={criarPostagem}>Enviar</button>
+              </div>
+
+            </div>
+
+            <PostList posts={postagens}/>
+
+          </div>
+        )}
       </> 
   );
 };
-
-//transformar lista em componente 
-//
-//    <ul>
-//{Movies.map(data => (
-//  <li key={data.id}> {data.name}</li>
-//))}
-//</ul>

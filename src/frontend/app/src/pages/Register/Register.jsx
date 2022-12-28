@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { LayoutComponents, FormInputLine } from "../../components/LayoutComponents/LayoutComponents"
+import { FormInputLine, PageContainer, CustomWrapper } from "../../components/LayoutComponents/LayoutComponents"
 import { FetchMethods } from "../../components/FetchMethods/FetchMethods";
 
 const URL_REGISTRAR_USUARIO = "http://localhost:3333/users"
@@ -54,43 +54,47 @@ export const Register = () => {
     }
 
     return (
-      <LayoutComponents> 
-        <form className="login-form">
-          <span className="login-form-title">Criar Conta</span>
+      <PageContainer>
+        <CustomWrapper>
+          <form className="login-form" onSubmit={criaUsuario}>
+            <span className="login-form-title">Criar Conta</span>
 
-          <FormInputLine
-            inputLabel="Username"
-            variableName="usernameInput"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+            <FormInputLine
+              inputLabel="Username"
+              variableName="usernameInput"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
 
-          <FormInputLine
-            inputLabel="Password"
-            variableName="passwordInput"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+            <FormInputLine
+              inputLabel="Password"
+              variableName="passwordInput"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+            />
 
-          <FormInputLine
-            inputLabel="Confirm password"
-            variableName="confirmpasswordInput"
-            value={confirmpassword}
-            onChange={(e) => setConfirmpassword(e.target.value)}
-          />
+            <FormInputLine
+              inputLabel="Confirm password"
+              variableName="confirmpasswordInput"
+              value={confirmpassword}
+              onChange={(e) => setConfirmpassword(e.target.value)}
+              type="password"
+            />
 
-          <div className="container-login-form-btn">
-            <button className="login-form-btn" onClick={criaUsuario}>Cadastrar</button>
-          </div>
+            <div className="container-login-form-btn">
+              <button className="login-form-btn" type="submit">Cadastrar</button>
+            </div>
 
-          <div className="text-center">
-            <span className="txt1">Ja possui conta?</span>
+            <div className="text-center">
+              <span className="txt1">Ja possui conta?</span>
 
-            <Link className="txt2" to="/login">
-              Acessar Com Nome de Usuario e Senha
-            </Link>
-          </div>
-        </form>
-      </LayoutComponents>
+              <Link className="txt2" to="/login">
+                Acessar Com Nome de Usuario e Senha
+              </Link>
+            </div>
+          </form>
+        </CustomWrapper>
+      </PageContainer>
     )
 }

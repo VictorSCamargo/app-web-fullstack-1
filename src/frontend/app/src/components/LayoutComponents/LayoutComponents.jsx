@@ -1,6 +1,6 @@
 import './styles.css';
 
-export const LayoutComponents = (props) => {
+export const LayoutComponent = (props) => {
     return (
         <div className="container">
             <div className="container-login">

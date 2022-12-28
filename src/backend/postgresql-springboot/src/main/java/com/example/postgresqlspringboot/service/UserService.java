@@ -27,6 +27,10 @@ public class UserService {
         throw new RuntimeException();
     }
 
+//    public User findByUsername(String username){
+//        Optional<User> entity = userRepository.findBy()
+//    }
+
     public User save(UserDTO dto) {
         User entity = new User();
         entity.setUsername(dto.getUsername());

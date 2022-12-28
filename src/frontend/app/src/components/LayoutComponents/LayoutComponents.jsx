@@ -35,7 +35,7 @@ export const FormInputLine = (props) => {
             <input
             className={props.value !== "" ? "has-val input" : "input"}
             name={props.variableName}
-            type="text"
+            type={props.type ? props.type : "text"}
             value={props.value}
             onChange={props.onChange}
             />

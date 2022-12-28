@@ -1,5 +1,5 @@
 
-export class UserFetchMethods  {
+export class FetchMethods  {
     constructor() {
     }
 

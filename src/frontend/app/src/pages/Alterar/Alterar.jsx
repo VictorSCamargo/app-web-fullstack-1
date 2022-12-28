@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { LayoutComponents } from "../../components/LayoutComponents/LayoutComponents";
+import { LayoutComponents, FormInputLine } from "../../components/LayoutComponents/LayoutComponents";
+import { FetchMethods } from "../../components/FetchMethods/FetchMethods";
 
 const URL_ALTERAR_SENHA = "http://localhost:3333/users/update-password"
 
@@ -14,8 +15,11 @@ export const Alterar = () => {
   async function requisitarAlteracaoDeSenha(event) {
     event.preventDefault();
 
+    console.log("requisitarAlteracaoDeSenha...")
+
     if(password !== confirmpassword) {
-      alert("Senhas nao batem")
+      console.log("Senhas não batem.")
+      alert("Senhas não batem.")
     }
     else{
       const data_to_send = {
@@ -23,80 +27,62 @@ export const Alterar = () => {
           "password": password
       };
 
-      const req = {
-          method: "POST",
-          mode: 'cors',
-          cache: "default",
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data_to_send)
-      };
+      console.log("Dados de envio:", data_to_send)
 
-      try {
-        const res = await fetch(URL_ALTERAR_SENHA, req);
-        
-        const dados = await res.json()
-        
-        console.log(dados)
+      const response = await FetchMethods.post(URL_ALTERAR_SENHA, data_to_send);
 
-        if(res.status !== 200) {
+      console.log("Resposta:", response)
+
+      if(response){
+        const dados = await response.json()
+        
+        console.log("Dados de resposta:", dados)
+
+        if(response.status !== 200) {
+          console.log("Status da resposta diferente de 200:", dados.message)
           alert(dados.message)
         }
         else {
-          alert("Senha alterada com sucesso")
+          alert("Senha alterada com sucesso.")
 
-          setTimeout(() => {
-            // 👇 Redirects to about page, note the `replace: true`
-            navigate('/login', { replace: true });
-          }, 10);
+          console.log("Sucesso. Redirecinando para login...")
+
+          navigate('/login', { replace: true });
         }
-      }
-      catch(e){
-        console.log("Falha ao comunicar com servidor")
       }
     }
   }
 
   return (
     <LayoutComponents>
-      <form className="login-form">
+      <form className="login-form" onSubmit={requisitarAlteracaoDeSenha}>
         <span className="login-form-title">Alterar Senha</span>
-        <div className="wrap-input">
-          <input
-            className={username !== "" ? "has-val input" : "input"}
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <span className="focus-input" data-placeholder="Username"></span>
-        </div>
 
-        <div className="wrap-input">
-          <input
-            className={password !== "" ? "has-val input" : "input"}
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <span className="focus-input" data-placeholder="Password"></span>
-        </div>
+        <FormInputLine
+          inputLabel="Username"
+          variableName="usernameInput"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
 
-        <div className="wrap-input">
-          <input
-            className={confirmpassword !== "" ? "has-val input" : "input"}
-            type="password"
-            value={confirmpassword}
-            onChange={(e) => setConfirmpassword(e.target.value)}
-          />
-          <span
-            className="focus-input"
-            data-placeholder="Confirm Password"
-          ></span>
-        </div>
+        <FormInputLine
+          inputLabel="Password"
+          variableName="passwordInput"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          type="password"
+        />
+
+        <FormInputLine
+          inputLabel="Confirm password"
+          variableName="confirmpasswordInput"
+          value={confirmpassword}
+          onChange={(e) => setConfirmpassword(e.target.value)}
+          type="password"
+        />
 
         <div className="container-login-form-btn">
-          <button className="login-form-btn" onClick={requisitarAlteracaoDeSenha}>
+          <button className="login-form-btn" type="submit">
             Confirmar
           </button>
         </div>

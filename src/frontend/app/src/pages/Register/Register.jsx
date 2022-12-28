@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { LayoutComponents } from "../../components/LayoutComponents/LayoutComponents"
+import { LayoutComponents, FormInputLine } from "../../components/LayoutComponents/LayoutComponents"
+import { FetchMethods } from "../../components/FetchMethods/FetchMethods";
 
 const URL_REGISTRAR_USUARIO = "http://localhost:3333/users"
 
@@ -14,96 +15,82 @@ export const Register = () => {
     async function criaUsuario(event) {
       event.preventDefault();
 
-      console.log("criarUsuario...")
+      console.log("criaUsuario...")
 
       if(password !== confirmpassword) {
-        alert("Senhas nao batem")
+        console.log("Senhas não batem.")
+        alert("Senhas não batem.")
       }
       else{
-
         const data_to_send = {
             "username": username,
             "password": password
         };
 
-        const req = {
-            method: "POST",
-            mode: 'cors',
-            cache: "default",
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data_to_send)
-        };
+        console.log("Dados de envio:", data_to_send);
 
-        try {
-          const res = await fetch(URL_REGISTRAR_USUARIO, req);
-          
-          const dados = await res.json()
-          
-          console.log(dados)
+        const response = await FetchMethods.post(URL_REGISTRAR_USUARIO, data_to_send);
 
-          if(res.status !== 200) {
+        console.log("Resposta:", response)
+
+        if(response) {
+          const dados = await response.json()
+
+          console.log("Dados da resposta:", dados)
+
+          if(response.status !== 200) {
+            console.log("Status da resposta diferente de 200:", dados.message)
             alert(dados.message)
           }
           else {
-            alert("Usuario criado com sucesso")
+            alert("Usuario criado com sucesso.")
+
+            console.log("Sucesso. Redirecionando para login...")
 
             navigate('/login', { replace: true });
           }
-        }
-        catch(e){
-          console.log("Falha ao comunicar com servidor")
         }
       }
     }
 
     return (
-        <LayoutComponents> 
-                  <form className="login-form">
-        <span className="login-form-title">Criar Conta</span>
-        <div className="wrap-input">
-          <input
-            className={username !== "" ? "has-val input" : "input"}
-            type="text"
+      <LayoutComponents> 
+        <form className="login-form">
+          <span className="login-form-title">Criar Conta</span>
+
+          <FormInputLine
+            inputLabel="Username"
+            variableName="usernameInput"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <span className="focus-input" data-placeholder="Username"></span>
-        </div>
 
-        <div className="wrap-input">
-          <input
-            className={password !== "" ? "has-val input" : "input"}
-            type="password"
+          <FormInputLine
+            inputLabel="Password"
+            variableName="passwordInput"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <span className="focus-input" data-placeholder="Password"></span>
-        </div>
 
-        <div className="wrap-input">
-          <input
-            className={confirmpassword !== "" ? "has-val input" : "input"}
-            type="password"
+          <FormInputLine
+            inputLabel="Confirm password"
+            variableName="confirmpasswordInput"
             value={confirmpassword}
             onChange={(e) => setConfirmpassword(e.target.value)}
           />
-          <span className="focus-input" data-placeholder="Confirm Password"></span>
-        </div>
 
-        <div className="container-login-form-btn">
-          <button className="login-form-btn" onClick={criaUsuario}>Cadastrar</button>
-        </div>
+          <div className="container-login-form-btn">
+            <button className="login-form-btn" onClick={criaUsuario}>Cadastrar</button>
+          </div>
 
-        <div className="text-center">
-          <span className="txt1">Ja possui conta?</span>
+          <div className="text-center">
+            <span className="txt1">Ja possui conta?</span>
 
-          <Link className="txt2" to="/login">
-            Acessar Com Nome de Usuario e Senha
-          </Link>
-        </div>
-      </form>
-        </LayoutComponents>
+            <Link className="txt2" to="/login">
+              Acessar Com Nome de Usuario e Senha
+            </Link>
+          </div>
+        </form>
+      </LayoutComponents>
     )
 }

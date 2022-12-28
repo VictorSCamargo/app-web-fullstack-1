@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { LayoutComponents, CustomWrapper, FormInputLine, PageContainer } from "../../components/LayoutComponents/LayoutComponents";
 import { Link, useNavigate } from 'react-router-dom';
-import { UserFetchMethods } from "../../components/UserFetchMethods/UserFetchMethods";
+import { FetchMethods } from "../../components/FetchMethods/FetchMethods";
 
 const URL_USERS = "http://localhost:3333/users/"
 
@@ -10,26 +10,6 @@ export const Login = () => {
   const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
-  const userFetchMethods = new UserFetchMethods();
-
-  // async function testarMetodosFetch(event) {
-  //   event.preventDefault();
-
-  //   console.log("testarMetodosFetch...")
-
-  //   const data_to_send = {
-  //     "username": "TESTE",
-  //     "password": "TESTE"
-  //   };
-
-  //   console.log("GET")
-  //   console.log(await (await UserFetchMethods.get(URL_USERS)).json())
-
-  //   console.log("POST")
-  //   console.log(await (await UserFetchMethods.post(URL_USERS, data_to_send)).json())
-
-  //   console.log("DELETE")
-  // }
 
   async function autenticarLogin(event) {
     event.preventDefault();
@@ -41,9 +21,9 @@ export const Login = () => {
       "password": password
     };
 
-    console.log("Dados de login:", data_to_send);
+    console.log("Dados de envio:", data_to_send);
 
-    let response = await UserFetchMethods.post(URL_USERS + "login", data_to_send);
+    let response = await FetchMethods.post(URL_USERS + "verify-user", data_to_send);
 
     console.log("Resposta:", response)
 
@@ -69,7 +49,8 @@ export const Login = () => {
 
   return (
     <>
-      <LayoutComponents>
+    <PageContainer>
+      <CustomWrapper>
         <form className="login-form" onSubmit={autenticarLogin}>
 
           <span className="login-form-title">Bem Vindo!</span>
@@ -86,6 +67,7 @@ export const Login = () => {
             variableName="passwordInput"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            type="password"
           />
 
           <div className="container-login-form-btn">
@@ -105,8 +87,9 @@ export const Login = () => {
             </Link>
           </div>
 
-        </form>
-      </LayoutComponents>
+          </form>
+      </CustomWrapper>
+    </PageContainer>
     </>
   );
 };

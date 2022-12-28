@@ -1,13 +1,11 @@
 package com.example.postgresqlspringboot.service;
 
-import com.example.postgresqlspringboot.entity.User;
+import com.example.postgresqlspringboot.entity.UserEntity;
 import com.example.postgresqlspringboot.entity.dto.UserDTO;
 import com.example.postgresqlspringboot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,14 +15,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> findALl() { return userRepository.findAll(); }
+    public List<UserEntity> findALl() { return userRepository.findAll(); }
 
-    public List<User> findAllByUsername(String username) {
+    public List<UserEntity> findAllByUsername(String username) {
         return userRepository.findAllByUsername(username);
     }
 
-    public User findById(Long id) {
-        Optional<User> entity = userRepository.findById(id);
+    public UserEntity findById(Long id) {
+        Optional<UserEntity> entity = userRepository.findById(id);
         if (entity.isPresent()){
             return entity.get();
         }
@@ -35,15 +33,15 @@ public class UserService {
 //        Optional<User> entity = userRepository.findBy()
 //    }
 
-    public User save(UserDTO dto) {
-        User entity = new User();
+    public UserEntity save(UserDTO dto) {
+        UserEntity entity = new UserEntity();
         entity.setUsername(dto.getUsername());
         entity.setPassword(dto.getPassword());
 
         return userRepository.save(entity);
     }
 
-    public User update(User entity, UserDTO dto) {
+    public UserEntity update(UserEntity entity, UserDTO dto) {
         entity.setUsername(dto.getUsername());
         entity.setPassword(dto.getPassword());
 

@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +37,14 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> save(@RequestBody UserDTO dto){
-        return new ResponseEntity<>(userService.save(dto), HttpStatus.CREATED);
+        List<User> usersWithSameUsername = userService.findAllByUsername(dto.getUsername());
+
+        if(usersWithSameUsername.isEmpty()) {
+            return new ResponseEntity<>(userService.save(dto), HttpStatus.CREATED);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -63,20 +69,42 @@ public class UserController {
         }
     }
 
-//    @GetMapping("/verify-user")
-//    @ResponseStatus(HttpStatus.OK)
-//    public User verifyUser(){
-//        User user = new User();
-//        user.setUsername("Teste!");
-//        return user;
-//    }
+    @PostMapping("/verify-user")
+    public ResponseEntity<User> verifyUser(@RequestBody UserDTO dto){
+        try {
+            List<User> usersWithSameUsername = userService.findAllByUsername(dto.getUsername());
 
-//    @PostMapping("/verify-user")
-//    @ResponseStatus(HttpStatus.OK)
-//    public User verifyUser(@RequestBody UserDTO userDTO){
-//        User user = new User();
-//        user.setUsername("Teste!");
-//        return user;
-//    }
+            if(usersWithSameUsername.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            User foundUser = usersWithSameUsername.get(0);
+
+            if(foundUser.getPassword().equals(dto.getPassword())) {
+                return new ResponseEntity<>(foundUser, HttpStatus.OK);
+            }
+        }
+        catch (Exception e) {}
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/update-password")
+    public ResponseEntity<User> updatePassword(@RequestBody UserDTO dto){
+        try {
+            List<User> usersWithSameUsername = userService.findAllByUsername(dto.getUsername());
+
+            if(usersWithSameUsername.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            User foundUser = usersWithSameUsername.get(0);
+
+            return new ResponseEntity<>(userService.update(foundUser, dto), HttpStatus.OK);
+        }
+        catch (Exception e) {}
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }
 

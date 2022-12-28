@@ -19,6 +19,10 @@ public class UserService {
 
     public List<User> findALl() { return userRepository.findAll(); }
 
+    public List<User> findAllByUsername(String username) {
+        return userRepository.findAllByUsername(username);
+    }
+
     public User findById(Long id) {
         Optional<User> entity = userRepository.findById(id);
         if (entity.isPresent()){

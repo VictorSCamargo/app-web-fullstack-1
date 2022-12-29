@@ -35,11 +35,11 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserEntity> save(@RequestBody UserDTO dto){
-        List<UserEntity> usersWithSameUsername = userService.findAllByUsername(dto.getUsername());
+    public ResponseEntity<UserEntity> save(@RequestBody UserDTO userDTO){
+        List<UserEntity> usersWithSameUsername = userService.findAllByUsername(userDTO.getUsername());
 
         if(usersWithSameUsername.isEmpty()) {
-            return new ResponseEntity<>(userService.save(dto), HttpStatus.CREATED);
+            return new ResponseEntity<>(userService.save(userDTO), HttpStatus.CREATED);
         }
         else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -58,10 +58,10 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserEntity> updateUser(@RequestBody UserDTO dto, @PathVariable Long id){
+    public ResponseEntity<UserEntity> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id){
         try {
             UserEntity userEntity = userService.findById(id);
-            return new ResponseEntity<>(userService.update(userEntity, dto), HttpStatus.OK);
+            return new ResponseEntity<>(userService.update(userEntity, userDTO), HttpStatus.OK);
         }
         catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -69,9 +69,9 @@ public class UserController {
     }
 
     @PostMapping("/verify-user")
-    public ResponseEntity<UserEntity> verifyUser(@RequestBody UserDTO dto){
+    public ResponseEntity<UserEntity> verifyUser(@RequestBody UserDTO userDTO){
         try {
-            List<UserEntity> usersWithSameUsername = userService.findAllByUsername(dto.getUsername());
+            List<UserEntity> usersWithSameUsername = userService.findAllByUsername(userDTO.getUsername());
 
             if(usersWithSameUsername.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -79,7 +79,7 @@ public class UserController {
 
             UserEntity foundUserEntity = usersWithSameUsername.get(0);
 
-            if(foundUserEntity.getPassword().equals(dto.getPassword())) {
+            if(foundUserEntity.getPassword().equals(userDTO.getPassword())) {
                 return new ResponseEntity<>(foundUserEntity, HttpStatus.OK);
             }
         }
@@ -89,9 +89,9 @@ public class UserController {
     }
 
     @PostMapping("/update-password")
-    public ResponseEntity<UserEntity> updatePassword(@RequestBody UserDTO dto){
+    public ResponseEntity<UserEntity> updatePassword(@RequestBody UserDTO userDTO){
         try {
-            List<UserEntity> usersWithSameUsername = userService.findAllByUsername(dto.getUsername());
+            List<UserEntity> usersWithSameUsername = userService.findAllByUsername(userDTO.getUsername());
 
             if(usersWithSameUsername.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -99,7 +99,7 @@ public class UserController {
 
             UserEntity foundUserEntity = usersWithSameUsername.get(0);
 
-            return new ResponseEntity<>(userService.update(foundUserEntity, dto), HttpStatus.OK);
+            return new ResponseEntity<>(userService.update(foundUserEntity, userDTO), HttpStatus.OK);
         }
         catch (Exception e) {}
 

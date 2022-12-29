@@ -9,7 +9,7 @@ export const PostList = (props) => {
 
         const linhas_construidas = postsOrdenados.map(postagem => (
             <li key={postagem._id}>
-                <PostComponent username={postagem.username} texto={postagem.texto}></PostComponent>
+                <PostComponent username={postagem.username} texto={postagem.texto} titulo={postagem.titulo}></PostComponent>
             </li>
             )
         )

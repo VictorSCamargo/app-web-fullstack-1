@@ -27,7 +27,11 @@ export const Login = () => {
 
     console.log("Resposta:", response)
 
-    if(response) {
+    if(!response) {
+      alert("Falha ao comunicar com backend: logando com usuário genérico para visualização da página de postagens.");
+      navigate('/post', { replace: true, state: {"userLogado": "User Generico"} });
+    }
+    else {
   
       const data_received = await response.json();
       console.log("Dados da resposta:", data_received);

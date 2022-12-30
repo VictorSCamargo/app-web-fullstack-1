@@ -1,5 +1,6 @@
 package com.example.postgresqlspringboot.controller;
 
+import com.example.postgresqlspringboot.entity.ErrorMessage;
 import com.example.postgresqlspringboot.entity.UserEntity;
 import com.example.postgresqlspringboot.entity.dto.UserDTO;
 import com.example.postgresqlspringboot.service.UserService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -20,14 +22,14 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserEntity>> findAll() {
-        return new ResponseEntity<>(userService.findALl(), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findALl());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserEntity> findById(@PathVariable Long id){
         try {
             UserEntity userEntity = userService.findById(id);
-            return new ResponseEntity<>(userEntity, HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body(userEntity);
         }
         catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -35,14 +37,16 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserEntity> save(@RequestBody UserDTO userDTO){
+    public ResponseEntity<?> save(@RequestBody UserDTO userDTO){
         List<UserEntity> usersWithSameUsername = userService.findAllByUsername(userDTO.getUsername());
 
         if(usersWithSameUsername.isEmpty()) {
-            return new ResponseEntity<>(userService.save(userDTO), HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(userDTO));
         }
         else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorMessage("Usuario com esse nome ja existe"));
         }
     }
 
@@ -69,41 +73,39 @@ public class UserController {
     }
 
     @PostMapping("/verify-user")
-    public ResponseEntity<UserEntity> verifyUser(@RequestBody UserDTO userDTO){
-        try {
-            List<UserEntity> usersWithSameUsername = userService.findAllByUsername(userDTO.getUsername());
+    public ResponseEntity<?> verifyUser(@RequestBody UserDTO userDTO){
 
-            if(usersWithSameUsername.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+        List<UserEntity> usersWithSameUsername = userService.findAllByUsername(userDTO.getUsername());
 
-            UserEntity foundUserEntity = usersWithSameUsername.get(0);
-
-            if(foundUserEntity.getPassword().equals(userDTO.getPassword())) {
-                return new ResponseEntity<>(foundUserEntity, HttpStatus.OK);
-            }
+        if(usersWithSameUsername.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new ErrorMessage("Username nao encontrado na base"));
         }
-        catch (Exception e) {}
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        UserEntity foundUserEntity = usersWithSameUsername.get(0);
+
+        if(!foundUserEntity.getPassword().equals(userDTO.getPassword())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage("Senha incorreta"));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(foundUserEntity);
     }
 
     @PostMapping("/update-password")
-    public ResponseEntity<UserEntity> updatePassword(@RequestBody UserDTO userDTO){
-        try {
-            List<UserEntity> usersWithSameUsername = userService.findAllByUsername(userDTO.getUsername());
+    public ResponseEntity<?> updatePassword(@RequestBody UserDTO userDTO){
 
-            if(usersWithSameUsername.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+        List<UserEntity> usersWithSameUsername = userService.findAllByUsername(userDTO.getUsername());
 
-            UserEntity foundUserEntity = usersWithSameUsername.get(0);
-
-            return new ResponseEntity<>(userService.update(foundUserEntity, userDTO), HttpStatus.OK);
+        if(usersWithSameUsername.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new ErrorMessage("Username nao encontrado na base"));
         }
-        catch (Exception e) {}
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        UserEntity foundUserEntity = usersWithSameUsername.get(0);
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(foundUserEntity, userDTO));
     }
 }
 

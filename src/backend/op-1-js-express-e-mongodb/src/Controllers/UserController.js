@@ -42,7 +42,7 @@ class UserController {
         if(!user) {
           const createdUser = await UserModel.create(req.body);
 
-          return res.status(200).json(createdUser);
+          return res.status(201).json(createdUser);
         }
         else {
           return res.status(400).json({ message: "Usuario com esse nome ja existe"});

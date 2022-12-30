@@ -8,7 +8,7 @@ export const PostList = (props) => {
         let postsOrdenados = props.posts.slice(0).reverse();
 
         const linhas_construidas = postsOrdenados.map(postagem => (
-            <li key={postagem._id}>
+            <li key={ postagem._id ? postagem._id : postagem.id}>
                 <PostComponent username={postagem.username} texto={postagem.texto} titulo={postagem.titulo}></PostComponent>
             </li>
             )

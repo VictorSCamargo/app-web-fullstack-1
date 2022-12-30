@@ -2,8 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FormInputLine, PageContainer, CustomWrapper } from "../../components/LayoutComponents/LayoutComponents";
 import { FetchMethods } from "../../components/FetchMethods/FetchMethods";
-
-const URL_ALTERAR_SENHA = "http://localhost:3333/users/update-password"
+import { BackendPaths } from "../../components/BackendPaths/BackendPaths";
 
 export const Alterar = () => {
   const [username, setUsername] = useState("");
@@ -26,16 +25,16 @@ export const Alterar = () => {
           "username": username,
           "password": password
       };
-
       console.log("Dados de envio:", data_to_send)
 
-      const response = await FetchMethods.post(URL_ALTERAR_SENHA, data_to_send);
+      const caminho = BackendPaths.updatePasswordUrl;
+      console.log("Caminho:", caminho);
 
+      const response = await FetchMethods.post(caminho, data_to_send);
       console.log("Resposta:", response)
 
       if(response){
         const dados = await response.json()
-        
         console.log("Dados de resposta:", dados)
 
         if(response.status !== 200) {

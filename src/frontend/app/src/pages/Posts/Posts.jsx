@@ -2,9 +2,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { PostList }  from "./postList";
 import { FetchMethods } from "../../components/FetchMethods/FetchMethods";
+import { BackendPaths } from "../../components/BackendPaths/BackendPaths"; 
 import "./styles.css"
-
-const URL_POSTAGENS = "http://localhost:3333/posts"
 
 const postagensExemplo = [
   {"username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
@@ -72,10 +71,12 @@ export const Posts = (props) => {
         "titulo": `Postagem`,
         "texto": text
       };
-
       console.log("Dados de envio:", data_to_send);
+
+      const caminho = BackendPaths.postsUrl;
+      console.log("Caminho:", caminho);
   
-      const response = await FetchMethods.post(URL_POSTAGENS, data_to_send);
+      const response = await FetchMethods.post(caminho, data_to_send);
 
       console.log("Resposta:", response)
   
@@ -94,15 +95,23 @@ export const Posts = (props) => {
 
       console.log("getPostagensDoServidor...")
 
-      const response = await FetchMethods.get(URL_POSTAGENS)
+      const response = await FetchMethods.get(BackendPaths.postsUrl);
+      console.log("Resposta:", response);
 
       if(response) {
         const dados = await response.json()
+        console.log("Dados da resposta:", dados);
 
-        setPostagens(dados.posts);
+        if(dados.posts) {
+          setPostagens(dados.posts);
+        }
+        else {
+          setPostagens(dados);
+        }
+        
       }
       else {
-        alert("Comunicacao com servidor falhou: gerando postagens genéricas.");
+        alert("Comunicacao com servidor falhou: aplicando postagens genéricas.");
         setPostagens(postagensExemplo);
       }
     }

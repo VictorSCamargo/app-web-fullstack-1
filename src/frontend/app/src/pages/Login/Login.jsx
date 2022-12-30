@@ -2,8 +2,7 @@ import { useState } from "react";
 import { CustomWrapper, FormInputLine, PageContainer } from "../../components/LayoutComponents/LayoutComponents";
 import { Link, useNavigate } from 'react-router-dom';
 import { FetchMethods } from "../../components/FetchMethods/FetchMethods";
-
-const URL_USERS = "http://localhost:3333/users/"
+import { BackendPaths } from "../../components/BackendPaths/BackendPaths";
 
 export const Login = () => {
   const [password, setPassword] = useState("");
@@ -20,11 +19,12 @@ export const Login = () => {
       "username": username,
       "password": password
     };
-
     console.log("Dados de envio:", data_to_send);
 
-    let response = await FetchMethods.post(URL_USERS + "verify-user", data_to_send);
+    const caminho = BackendPaths.verifyUserUrl;
+    console.log("Caminho:", caminho);
 
+    let response = await FetchMethods.post(caminho, data_to_send);
     console.log("Resposta:", response)
 
     if(!response) {
@@ -32,7 +32,6 @@ export const Login = () => {
       navigate('/post', { replace: true, state: {"userLogado": "User Generico"} });
     }
     else {
-  
       const data_received = await response.json();
       console.log("Dados da resposta:", data_received);
 

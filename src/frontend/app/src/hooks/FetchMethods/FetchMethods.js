@@ -1,7 +1,5 @@
 
 export class FetchMethods {
-    constructor() {
-    }
 
     static async post(url, object) {
         const requestOptions = {

@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { FormInputLine, PageContainer, CustomWrapper } from "../../components/LayoutComponents/LayoutComponents"
-import { FetchMethods } from "../../components/FetchMethods/FetchMethods";
-import { BackendPaths } from "../../components/BackendPaths/BackendPaths";
+import { FormInputLine, PageContainer, CustomWrapper } from "../../components/layout_components/LayoutComponents"
+import { FetchMethods } from "../../hooks/FetchMethods/FetchMethods";
+import { BackendPaths } from "../../hooks/BackendPaths/BackendPaths";
 
 export const Register = () => {
   const [password, setPassword] = useState("");

@@ -1,5 +1,5 @@
 import React from 'react';
-import { PostComponent } from "../../components/PostComponent";
+import { PostComponent } from "./PostComponent";
 
 export const PostList = (props) => {
 

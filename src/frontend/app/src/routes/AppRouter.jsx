@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import {BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Login } from '../pages/Login/Login'
 import { Register } from '../pages/Register/Register'
 import { Alterar } from '../pages/Alterar/Alterar'

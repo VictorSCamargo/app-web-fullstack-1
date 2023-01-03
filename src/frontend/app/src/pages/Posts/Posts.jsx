@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
-import { PostList }  from "./postList";
-import { FetchMethods } from "../../components/FetchMethods/FetchMethods";
-import { BackendPaths } from "../../components/BackendPaths/BackendPaths"; 
+import { PostList }  from "../../components/post_components/PostList";
+import { FetchMethods } from "../../hooks/FetchMethods/FetchMethods";
+import { BackendPaths } from "../../hooks/BackendPaths/BackendPaths"; 
 import "./styles.css"
 
 const postagensExemplo = [
@@ -93,6 +93,9 @@ export const Posts = (props) => {
         const dados = await response.json()
         console.log("Dados da resposta:", dados);
 
+        setText("");
+        setTitulo("");
+
         getPostagensDoServidor()
       }
     }
@@ -144,11 +147,11 @@ export const Posts = (props) => {
 
                 <div className="post-title-input-div">
                   <h1 className="post-title-input-label">Título:</h1>
-                  <input className="post-title-input" maxLength={30} onChange={(e) => setTitulo(e.target.value)}/>
+                  <input className="post-title-input" maxLength={30} onChange={(e) => setTitulo(e.target.value)} value={titulo}/>
                 </div>
 
                 
-                <textarea className="text-send" onChange={(e) => setText(e.target.value)} maxLength={250}></textarea>
+                <textarea className="text-send" onChange={(e) => setText(e.target.value)} maxLength={250} value={text}></textarea>
 
                 <div className="container-post-send-btn">
                   <button className="post-send-btn" onClick={criarPostagem}>Enviar</button>

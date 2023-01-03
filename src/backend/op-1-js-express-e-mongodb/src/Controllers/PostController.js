@@ -13,7 +13,7 @@ class PostController {
         
         const createdPost = await PostModel.create(req.body)    
 
-        return res.status(200).json(createdPost);
+        return res.status(201).json(createdPost);
         } catch (error) {
         return res.status(404).json({ message: "Falha ao criar post"});
         }

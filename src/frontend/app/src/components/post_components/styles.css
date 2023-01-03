@@ -8,15 +8,15 @@
     width: 90%;
   }
 
-
 .username-text{
     margin-bottom: 5px;
     padding: 15px;
-    font-size:  20px;
+    font-size: 20px;
     color: #adadad;
 }
 
 .post-text{
+    background-color: #242424;
     font-size: 20px;
     border-style: solid;
     border-width: medium;
@@ -25,5 +25,6 @@
     color: whitesmoke;
     margin-bottom: 25px;
     padding: 15px;
+    overflow-wrap: break-word;
   }
   

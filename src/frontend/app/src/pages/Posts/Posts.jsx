@@ -15,8 +15,9 @@ const postagensExemplo = [
 ]
 
 export const Posts = (props) => {
-    const [text, setText] = useState("");
     const [userLogado, setUserLogado] = useState(null);
+    const [text, setText] = useState("");
+    const [titulo, setTitulo] = useState("");
     const [postagens, setPostagens] = useState(null);
 
     const location = useLocation()
@@ -66,9 +67,14 @@ export const Posts = (props) => {
 
       console.log("criarPostagem...")
 
+      if( (titulo === "") || (text === "") ) {
+        alert("Algum campo não foi preenchido");
+        return
+      }
+
       const data_to_send = {
         "username": userLogado,
-        "titulo": `Postagem`,
+        "titulo": titulo,
         "texto": text
       };
       console.log("Dados de envio:", data_to_send);
@@ -135,7 +141,14 @@ export const Posts = (props) => {
             <div className="post-wrapper">
               <div className="post-input">
                 <span className="login-form-title">Faça Uma Postagem!</span>
-                <textarea className="text-send" onChange={(e) => setText(e.target.value)}></textarea>
+
+                <div className="post-title-input-div">
+                  <h1 className="post-title-input-label">Título:</h1>
+                  <input className="post-title-input" maxLength={30} onChange={(e) => setTitulo(e.target.value)}/>
+                </div>
+
+                
+                <textarea className="text-send" onChange={(e) => setText(e.target.value)} maxLength={250}></textarea>
 
                 <div className="container-post-send-btn">
                   <button className="post-send-btn" onClick={criarPostagem}>Enviar</button>

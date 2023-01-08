@@ -20,10 +20,12 @@ body{
 
 .wrap-login {
   width: 390px;
+  min-width: 300px;
   background-color: #333;
   border-radius: 10px;
   overflow: hidden;
   padding: 77px 55px 33px 55px;
+  margin: 15px;
   box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.2);
 }
 
@@ -72,10 +74,6 @@ body{
   -moz-transition: all 0.4s;
   transition: all 0.4s;
   background: #6a7dfe;
-  background: -webkit-linear-gradient(to left, #21d4fd, #b721ff);
-  background: -o-linear-gradient(to left, #21d4fd, #b721ff);
-  background: -moz-linear-gradient(to left, #21d4fd, #b721ff);
-  background: linear-gradient(to left, #21d4fd, #b721ff);
 }
 
 .focus-input::after {

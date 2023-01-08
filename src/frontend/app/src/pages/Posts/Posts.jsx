@@ -10,8 +10,6 @@ const postagensExemplo = [
   {"username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
   {"username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
   {"username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
-  {"username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
-  {"username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."}
 ]
 
 export const Posts = (props) => {
@@ -19,12 +17,13 @@ export const Posts = (props) => {
     const [text, setText] = useState("");
     const [titulo, setTitulo] = useState("");
     const [postagens, setPostagens] = useState(null);
+    const [alertMessage, setAlertMessage] = useState("");
 
-    const location = useLocation()
-    const navigate = useNavigate()
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const deslogarUsuario = useCallback(() => {
-      setUserLogado(null)
+      setUserLogado(null);
 
       setTimeout(() => {
         navigate('/login', { replace: true });
@@ -65,12 +64,13 @@ export const Posts = (props) => {
     async function criarPostagem(event) {
       event.preventDefault();
 
-      console.log("criarPostagem...")
+      console.log("criarPostagem...");
 
       if( (titulo === "") || (text === "") ) {
-        alert("Algum campo não foi preenchido");
-        return
+        setAlertMessage("Algum campo não foi preenchido");
+        return;
       }
+      setAlertMessage("");
 
       const data_to_send = {
         "username": userLogado,
@@ -87,16 +87,16 @@ export const Posts = (props) => {
       console.log("Resposta:", response)
   
       if(!response) {
-        alert("Comunicação com backend falhou.")
+        setAlertMessage("Comunicação com backend falhou");
       }
       else {        
-        const dados = await response.json()
+        const dados = await response.json();
         console.log("Dados da resposta:", dados);
 
         setText("");
         setTitulo("");
 
-        getPostagensDoServidor()
+        getPostagensDoServidor();
       }
     }
 
@@ -120,7 +120,7 @@ export const Posts = (props) => {
         
       }
       else {
-        alert("Comunicacao com servidor falhou: aplicando postagens genéricas.");
+        alert("Comunicacao com servidor falhou: aplicando postagens genéricas");
         setPostagens(postagensExemplo);
       }
     }
@@ -150,12 +150,19 @@ export const Posts = (props) => {
                   <input className="post-title-input" maxLength={30} onChange={(e) => setTitulo(e.target.value)} value={titulo}/>
                 </div>
 
-                
                 <textarea className="text-send" onChange={(e) => setText(e.target.value)} maxLength={250} value={text}></textarea>
 
                 <div className="container-post-send-btn">
                   <button className="post-send-btn" onClick={criarPostagem}>Enviar</button>
                 </div>
+
+                {(alertMessage !== "") ? (
+                  <div className="text-center">
+                    <span className="txt-alert" data-testid="alerta-posts">Alerta: {alertMessage}</span>
+                  </div>
+                ) : (
+                  null
+                )}
 
               </div>
 

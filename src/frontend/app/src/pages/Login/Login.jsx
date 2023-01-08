@@ -8,12 +8,22 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
 
+  const [alertMessage, setAlertMessage] = useState("");
+  const [sucessMessage, setSucessMessage] = useState("");
+
   const navigate = useNavigate();
 
   async function autenticarLogin(event) {
     event.preventDefault();
 
     console.log("autenticarLogin...")
+
+    if( (username === "") || (password === "") ){
+      setAlertMessage("Preencha todos campos");
+      return;
+    }
+    setAlertMessage("");
+    setSucessMessage("");
     
     const data_to_send = {
       "username": username,
@@ -40,12 +50,14 @@ export const Login = () => {
         console.log("User logou:", data_received.username);
         console.log("Redirecionando para postagens...");
 
+        setSucessMessage("Logado com sucesso. Redirecionando...")
+
         setTimeout(() => {
           navigate('/post', { replace: true, state: {"userLogado": data_received.username} });
-        }, 500);
+        }, 2000);
       }
       else {
-        alert(data_received.message);
+        setAlertMessage(data_received.message);
       }
     }
   }
@@ -53,7 +65,7 @@ export const Login = () => {
   return (
     <PageContainer>
       <CustomWrapper>
-        <form className="login-form" onSubmit={autenticarLogin}>
+        <form className="login-form" onSubmit={autenticarLogin} data-testid="login-testid">
 
           <span className="login-form-title">Bem Vindo!</span>
 
@@ -75,6 +87,22 @@ export const Login = () => {
           <div className="container-login-form-btn">
             <button className="login-form-btn" type="submit">Login</button>
           </div>
+
+          {(alertMessage !== "") ? (
+            <div className="text-center">
+              <span className="txt-alert" data-testid="alerta-login">Alerta: {alertMessage}</span>
+            </div>
+          ) : (
+            null
+          )}
+
+          {(sucessMessage !== "") ? (
+            <div className="text-center">
+              <span className="txt-sucess" data-testid="sucesso-login">{sucessMessage}</span>
+            </div>
+          ) : (
+            null
+          )}
 
           <div className="text-center">
             <span className="txt1">Não possui conta?</span>

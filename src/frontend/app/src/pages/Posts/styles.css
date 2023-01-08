@@ -72,10 +72,6 @@
     width: 50%;
     height: 25px;
     background: #6a7dfe;
-    background: -webkit-linear-gradient(to left, #21d4fd, #b721ff);
-    background: -o-linear-gradient(to left, #21d4fd, #b721ff);
-    background: -moz-linear-gradient(to left, #21d4fd, #b721ff);
-    background: linear-gradient(to left, #21d4fd, #b721ff);
   }
   
   .post-send-btn:hover {
@@ -103,10 +99,6 @@
     width: 20%;
     height: 25px;
     background: #6a7dfe;
-    background: -webkit-linear-gradient(to left, #21d4fd, #b721ff);
-    background: -o-linear-gradient(to left, #21d4fd, #b721ff);
-    background: -moz-linear-gradient(to left, #21d4fd, #b721ff);
-    background: linear-gradient(to left, #21d4fd, #b721ff);
     margin: 5px;
     margin-left: 20px;
   }

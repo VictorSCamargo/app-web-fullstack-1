@@ -27,6 +27,7 @@ export const FormInputLine = (props) => {
             type={props.type ? props.type : "text"}
             value={props.value}
             onChange={props.onChange}
+            data-testid={props.variableName}
             />
             <span className="focus-input" data-placeholder={props.inputLabel}/>
         </div>

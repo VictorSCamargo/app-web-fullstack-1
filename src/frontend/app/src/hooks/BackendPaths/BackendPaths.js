@@ -1,6 +1,6 @@
 
 const URL_BACKEND_EXPRESS_MONGODB = "http://localhost:3333"
-const URL_BACKEND_SPRINGBOOT_POSTGRE = "http://localhost:8080/api"
+//const URL_BACKEND_SPRINGBOOT_POSTGRE = "http://localhost:8080/api"
 
 export class BackendPaths {
 

@@ -9,6 +9,9 @@ export const Alterar = () => {
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
 
+  const [alertMessage, setAlertMessage] = useState("");
+  const [sucessMessage, setSucessMessage] = useState("");
+
   const navigate = useNavigate()
 
   async function requisitarAlteracaoDeSenha(event) {
@@ -16,38 +19,47 @@ export const Alterar = () => {
 
     console.log("requisitarAlteracaoDeSenha...")
 
-    if(password !== confirmpassword) {
-      console.log("Senhas não batem.")
-      alert("Senhas não batem.")
+    if( (username === "") || (password === "") || (confirmpassword === "") ) {
+      console.log("Preencha todos campos");
+      setAlertMessage("Preencha todos campos");
+      return;
     }
-    else{
-      const data_to_send = {
-          "username": username,
-          "password": password
-      };
-      console.log("Dados de envio:", data_to_send)
+    if(password !== confirmpassword) {
+      console.log("Senhas não batem");
+      setAlertMessage("Senhas não batem");
+      return;
+    }
+    setAlertMessage("");
+    setSucessMessage("");
 
-      const caminho = BackendPaths.updatePasswordUrl;
-      console.log("Caminho:", caminho);
+    const data_to_send = {
+        "username": username,
+        "password": password
+    };
+    console.log("Dados de envio:", data_to_send);
 
-      const response = await FetchMethods.post(caminho, data_to_send);
-      console.log("Resposta:", response)
+    const caminho = BackendPaths.updatePasswordUrl;
+    console.log("Caminho:", caminho);
 
-      if(response){
-        const dados = await response.json()
-        console.log("Dados de resposta:", dados)
+    const response = await FetchMethods.post(caminho, data_to_send);
+    console.log("Resposta:", response);
 
-        if(response.status !== 200) {
-          console.log("Status da resposta diferente de 200:", dados.message)
-          alert(dados.message)
-        }
-        else {
-          alert("Senha alterada com sucesso.")
+    if(response){
+      const dados = await response.json();
+      console.log("Dados de resposta:", dados);
 
-          console.log("Sucesso. Redirecinando para login...")
+      if(response.status !== 200) {
+        console.log("Status da resposta diferente de 200:", dados.message);
+        setAlertMessage(dados.message);
+      }
+      else {
+        setSucessMessage("Senha alterada com sucesso. Redirecinando para login...");
 
+        console.log("Sucesso. Redirecinando para login...");
+
+        setTimeout(() => {
           navigate('/login', { replace: true });
-        }
+        }, 2000);
       }
     }
   }
@@ -86,6 +98,22 @@ export const Alterar = () => {
               Confirmar
             </button>
           </div>
+
+          {(alertMessage !== "") ? (
+            <div className="text-center">
+              <span className="txt-alert">Alerta: {alertMessage}</span>
+            </div>
+          ) : (
+            null
+          )}
+
+          {(sucessMessage !== "") ? (
+            <div className="text-center">
+              <span className="txt-sucess">{sucessMessage}</span>
+            </div>
+          ) : (
+            null
+          )}
 
           <div className="text-center">
             <span className="txt1">Ja possui conta?</span>

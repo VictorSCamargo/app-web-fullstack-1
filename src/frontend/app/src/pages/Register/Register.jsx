@@ -9,45 +9,57 @@ export const Register = () => {
   const [username, setUsername] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
 
+  const [alertMessage, setAlertMessage] = useState("");
+  const [sucessMessage, setSucessMessage] = useState("");
+
   const navigate = useNavigate();
 
   async function criaUsuario(event) {
     event.preventDefault();
 
-    console.log("criaUsuario...")
+    console.log("criaUsuario...");
 
-    if(password !== confirmpassword) {
-      console.log("Senhas não batem.")
-      alert("Senhas não batem.")
+    if( (username === "") || (password === "") || (confirmpassword === "") ) {
+      console.log("Preencha todos campos");
+      setAlertMessage("Preencha todos campos");
+      return;
     }
-    else{
-      const data_to_send = {
-          "username": username,
-          "password": password
-      };
-      console.log("Dados de envio:", data_to_send);
+    if(password !== confirmpassword) {
+      console.log("Senhas não batem");
+      setAlertMessage("Senhas não batem");
+      return;
+    }
 
-      const caminho = BackendPaths.usersUrl;
-      console.log("Caminho:", caminho);
+    setAlertMessage("");
+    setSucessMessage("");
 
-      const response = await FetchMethods.post(caminho, data_to_send);
-      console.log("Resposta:", response)
+    const data_to_send = {
+        "username": username,
+        "password": password
+    };
+    console.log("Dados de envio:", data_to_send);
 
-      if(response) {
-        const dados = await response.json()
-        console.log("Dados da resposta:", dados)
+    const caminho = BackendPaths.usersUrl;
+    console.log("Caminho:", caminho);
 
-        if( response.status !== 201 ) {
-          console.log("Status da resposta diferente de 200:", dados.message)
-          alert(dados.message)
-        }
-        else {
-          alert("Usuario criado com sucesso.")
+    const response = await FetchMethods.post(caminho, data_to_send);
+    console.log("Resposta:", response);
 
-          console.log("Sucesso. Redirecionando para login...")
+    if(response) {
+      const dados = await response.json();
+      console.log("Dados da resposta:", dados);
 
+      if( response.status !== 201 ) {
+        console.log("Status da resposta diferente de 200:", dados.message);
+        setAlertMessage(dados.message);
+      }
+      else {
+        console.log("Sucesso. Redirecionando para login...")
+        setSucessMessage("Criado com sucesso. Redirecionando para login...")
+
+        setTimeout(() => {
           navigate('/login', { replace: true });
-        }
+        }, 2000);
       }
     }
   }
@@ -84,6 +96,22 @@ export const Register = () => {
           <div className="container-login-form-btn">
             <button className="login-form-btn" type="submit">Cadastrar</button>
           </div>
+
+          {(alertMessage !== "") ? (
+            <div className="text-center">
+              <span className="txt-alert">Alerta: {alertMessage}</span>
+            </div>
+          ) : (
+            null
+          )}
+
+          {(sucessMessage !== "") ? (
+            <div className="text-center">
+              <span className="txt-sucess">{sucessMessage}</span>
+            </div>
+          ) : (
+            null
+          )}
 
           <div className="text-center">
             <span className="txt1">Ja possui conta?</span>

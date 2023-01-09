@@ -9,7 +9,7 @@ export const NotFound = () => {
         console.log("Pagina vazia. Redirecionando para login...")
 
         navigate('/login', { replace: true });
-      }, []);
+      }, [navigate]);
 
     return(
         <>

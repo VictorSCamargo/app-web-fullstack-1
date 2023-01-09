@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Login } from '../Login';
 import '@testing-library/jest-dom'
 
-describe('Login', () => {
+describe('Componente Login', () => {
 
     test("Link para criar conta no documento", () => {
         render(<Login/>, {wrapper: BrowserRouter});

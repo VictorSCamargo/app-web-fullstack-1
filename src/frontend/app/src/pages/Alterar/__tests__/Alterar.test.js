@@ -1,47 +1,47 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
-import { Register } from '../Register';
+import { Alterar } from '../Alterar';
 import '@testing-library/jest-dom'
 
-describe('Componente Register', () => {
+describe('Componente Alterar', () => {
 
     test("Link para login no documento", () => {
-        render(<Register/>, {wrapper: BrowserRouter});
+        render(<Alterar/>, {wrapper: BrowserRouter});
         expect(
             screen.getByRole("link", {name: "Acessar Com Nome de Usuario e Senha" })
         ).toBeInTheDocument();
     })
 
     test("Input de username no documento", () => {
-        render(<Register/>, {wrapper: BrowserRouter});
+        render(<Alterar/>, {wrapper: BrowserRouter});
         const input = screen.getByTestId("usernameInput");
 
         expect(input).toBeInTheDocument();
     })
 
     test("Input de password no documento", () => {
-        render(<Register/>, {wrapper: BrowserRouter});
+        render(<Alterar/>, {wrapper: BrowserRouter});
         const input = screen.getByTestId("passwordInput");
 
         expect(input).toBeInTheDocument();
     })
 
     test("Input de confirm password no documento", () => {
-        render(<Register/>, {wrapper: BrowserRouter});
+        render(<Alterar/>, {wrapper: BrowserRouter});
         const input = screen.getByTestId("confirmpasswordInput");
 
         expect(input).toBeInTheDocument();
     })
 
     test("Botao no documento", () => {
-        render(<Register/>, {wrapper: BrowserRouter});
+        render(<Alterar/>, {wrapper: BrowserRouter});
 
         expect(screen.getByRole("button")).toBeInTheDocument();
     })
 
     test("Alerta de senhas não baterem", () => {
-        render(<Register/>, {wrapper: BrowserRouter});
+        render(<Alterar/>, {wrapper: BrowserRouter});
 
         const usernameInput = screen.getByTestId("usernameInput");
         const passwordInput = screen.getByTestId("passwordInput");
@@ -57,7 +57,7 @@ describe('Componente Register', () => {
     })
 
     test("Alerta ao enviar com algum campo vazio", async() => {
-        render(<Register/>, {wrapper: BrowserRouter});
+        render(<Alterar/>, {wrapper: BrowserRouter});
 
         const usernameInput = screen.getByTestId("usernameInput");
         const passwordInput = screen.getByTestId("passwordInput");

@@ -19,9 +19,14 @@ export const Alterar = () => {
 
     console.log("requisitarAlteracaoDeSenha...")
 
+    if( (username === "") || (password === "") || (confirmpassword === "") ) {
+      console.log("Preencha todos campos");
+      setAlertMessage("Preencha todos campos");
+      return;
+    }
     if(password !== confirmpassword) {
-      console.log("Senhas não batem.");
-      setAlertMessage("Senhas não batem.");
+      console.log("Senhas não batem");
+      setAlertMessage("Senhas não batem");
       return;
     }
     setAlertMessage("");

@@ -94,7 +94,7 @@ export const Register = () => {
 
           {(alertMessage !== "") ? (
             <div className="text-center">
-              <span className="txt-alert" data-testid="alerta-register">Alerta: {alertMessage}</span>
+              <span className="txt-alert">Alerta: {alertMessage}</span>
             </div>
           ) : (
             null
@@ -102,7 +102,7 @@ export const Register = () => {
 
           {(sucessMessage !== "") ? (
             <div className="text-center">
-              <span className="txt-sucess" data-testid="sucesso-register">{sucessMessage}</span>
+              <span className="txt-sucess">{sucessMessage}</span>
             </div>
           ) : (
             null

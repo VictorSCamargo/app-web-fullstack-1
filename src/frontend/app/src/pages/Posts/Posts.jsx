@@ -158,7 +158,7 @@ export const Posts = (props) => {
 
                 {(alertMessage !== "") ? (
                   <div className="text-center">
-                    <span className="txt-alert" data-testid="alerta-posts">Alerta: {alertMessage}</span>
+                    <span className="txt-alert">Alerta: {alertMessage}</span>
                   </div>
                 ) : (
                   null

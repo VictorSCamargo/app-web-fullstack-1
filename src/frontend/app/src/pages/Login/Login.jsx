@@ -65,7 +65,7 @@ export const Login = () => {
   return (
     <PageContainer>
       <CustomWrapper>
-        <form className="login-form" onSubmit={autenticarLogin} data-testid="login-testid">
+        <form className="login-form" onSubmit={autenticarLogin}>
 
           <span className="login-form-title">Bem Vindo!</span>
 
@@ -90,7 +90,7 @@ export const Login = () => {
 
           {(alertMessage !== "") ? (
             <div className="text-center">
-              <span className="txt-alert" data-testid="alerta-login">Alerta: {alertMessage}</span>
+              <span className="txt-alert">Alerta: {alertMessage}</span>
             </div>
           ) : (
             null
@@ -98,7 +98,7 @@ export const Login = () => {
 
           {(sucessMessage !== "") ? (
             <div className="text-center">
-              <span className="txt-sucess" data-testid="sucesso-login">{sucessMessage}</span>
+              <span className="txt-sucess">{sucessMessage}</span>
             </div>
           ) : (
             null

@@ -2,9 +2,9 @@
 
 Protótipo de fórum para compartilhamento de postagens, semelhante ao Twitter, com sistema de login, registro, alteração de senha e a página para realização e visualização de postagens.
 
-Projeto em desenvolvimento para fins didáticos e desenvolvimento de habilidades pessoais.
+Imagens exemplo na [pasta de imagens](imagens/). Há, também, o [vídeo entregue durante a disciplina de programação web](https://youtu.be/cDKEfB4eEh8), que está desatualizado. Porém mostra as funcionalidades gerais. A entrega referida no vídeo encontra-se em [outra branch](https://github.com/VictorSCamargo/app-web-fullstack-1/tree/entrega-disciplina-web-2022-2).
 
-Iniciado durante a disciplina de programação web do cursos de Sistemas de Informação da UFSC.
+Projeto em desenvolvimento para fins didáticos e desenvolvimento de habilidades pessoais.
 
 ## Habilidades aplicadas
 
@@ -16,6 +16,13 @@ Utiliza-se para o **frontend**:
 Há duas opções construídas para o **backend**:
 - [Node.js](https://nodejs.org/en/) com [Express](http://expressjs.com/) e [MongoDB](https://www.mongodb.com/home) remoto;
 - [Java 8](https://www.oracle.com/br/java/technologies/javase/javase8-archive-downloads.html) com [Springboot](https://spring.io/projects/spring-boot) e banco de dados local gerenciado por [ProstgreSQL](https://www.postgresql.org/).
+
+## Funcionalidades e detalhes de regra de projeto
+
+- Há preocupação com a página de postagens ser acessível apenas após autenticação por meio do login (sem estar logado ela não renderiza e redireciona o usuário à página de login);
+- Há limitações de caracteres, checagens de campo vazio e checagens de campos com valores que não batem;
+- A comunicação com o backend pode retorna mensagens customizadas que são impressas no HTML da aplicação;
+- Testes de unidade que verificam componentes e simulam interação do usuário com as páginas.
 
 ## Como executar localmente
 

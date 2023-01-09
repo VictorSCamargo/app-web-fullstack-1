@@ -67,7 +67,7 @@ export const Posts = (props) => {
       console.log("criarPostagem...");
 
       if( (titulo === "") || (text === "") ) {
-        setAlertMessage("Algum campo não foi preenchido");
+        setAlertMessage("Preencha todos campos");
         return;
       }
       setAlertMessage("");
@@ -146,11 +146,22 @@ export const Posts = (props) => {
                 <span className="login-form-title">Faça Uma Postagem!</span>
 
                 <div className="post-title-input-div">
-                  <h1 className="post-title-input-label">Título:</h1>
-                  <input className="post-title-input" maxLength={30} onChange={(e) => setTitulo(e.target.value)} value={titulo}/>
+                  <label className="post-title-input-label" >Título:</label>
+                  <input
+                    className="post-title-input" 
+                    maxLength={30} 
+                    onChange={(e) => setTitulo(e.target.value)} 
+                    value={titulo}
+                    placeholder="postagem"
+                    />
                 </div>
 
-                <textarea className="text-send" onChange={(e) => setText(e.target.value)} maxLength={250} value={text}></textarea>
+                <textarea 
+                  className="text-send" 
+                  onChange={(e) => setText(e.target.value)} 
+                  maxLength={250} value={text}
+                  placeholder="Fale sobre."
+                  />
 
                 <div className="container-post-send-btn">
                   <button className="post-send-btn" onClick={criarPostagem}>Enviar</button>

@@ -50,16 +50,16 @@ export const Register = () => {
       console.log("Dados da resposta:", dados);
 
       if( response.status !== 201 ) {
-        console.log("Status da resposta diferente de 200:", dados.message);
+        console.log("Status da resposta diferente de 201:", dados.message);
         setAlertMessage(dados.message);
       }
       else {
         console.log("Sucesso. Redirecionando para login...")
         setSucessMessage("Criado com sucesso. Redirecionando para login...")
 
-        setTimeout(() => {
-          navigate('/login', { replace: true });
-        }, 2000);
+        // setTimeout(() => {
+        //   navigate('/login', { replace: true });
+        // }, 2000);
       }
     }
   }

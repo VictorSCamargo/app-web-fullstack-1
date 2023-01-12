@@ -1,10 +1,28 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { Register } from '../Register';
 import '@testing-library/jest-dom'
+import { FetchMethods } from '../../../hooks/FetchMethods/FetchMethods';
 
 describe('Componente Register', () => {
+
+    const mockData = { "username": "ADMIN", "password": "ADMIN" };
+
+    beforeEach(() => {
+        jest.spyOn(FetchMethods, 'post')
+            .mockImplementation(
+                //() => new Promise((res) => setTimeout(() => res(mockData), 200))
+                () => Promise.resolve({
+                    "ok": true,
+                    "status": 201,
+                    "json": () => Promise.resolve(mockData)
+                })
+            );
+    });
+    afterEach(() => {
+        FetchMethods.post.mockRestore();
+    });
 
     test("Link para login no documento", () => {
         render(<Register/>, {wrapper: BrowserRouter});
@@ -56,7 +74,8 @@ describe('Componente Register', () => {
         expect(screen.queryByText(/Senhas não batem/i)).toBeInTheDocument();
     })
 
-    test("Alerta ao enviar com algum campo vazio", async() => {
+    test("Alerta ao tentar enviar com algum campo vazio", async() => {
+
         render(<Register/>, {wrapper: BrowserRouter});
 
         const usernameInput = screen.getByTestId("usernameInput");
@@ -89,5 +108,6 @@ describe('Componente Register', () => {
         userEvent.click(button);
         //query explora a DOM e nao lanca excessao caso nao ache
         expect(screen.queryByText(/Preencha todos campos/i)).toBeNull();
+        await waitFor( () => expect(screen.getByText(/sucesso/i).toBeInTheDocument()) );
     })
 });

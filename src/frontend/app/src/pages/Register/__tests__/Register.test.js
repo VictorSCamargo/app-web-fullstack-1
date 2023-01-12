@@ -7,107 +7,205 @@ import { FetchMethods } from '../../../hooks/FetchMethods/FetchMethods';
 
 describe('Componente Register', () => {
 
-    const mockData = { "username": "ADMIN", "password": "ADMIN" };
-
-    beforeEach(() => {
-        jest.spyOn(FetchMethods, 'post')
-            .mockImplementation(
-                //() => new Promise((res) => setTimeout(() => res(mockData), 200))
-                () => Promise.resolve({
-                    "ok": true,
-                    "status": 201,
-                    "json": () => Promise.resolve(mockData)
-                })
-            );
-    });
-    afterEach(() => {
-        FetchMethods.post.mockRestore();
-    });
-
-    test("Link para login no documento", () => {
-        render(<Register/>, {wrapper: BrowserRouter});
-        expect(
-            screen.getByRole("link", {name: "Acessar Com Nome de Usuario e Senha" })
-        ).toBeInTheDocument();
+    describe("Elementos no documento", () => {
+        test("Link para login no documento", () => {
+            render(<Register/>, {wrapper: BrowserRouter});
+            expect(
+                screen.getByRole("link", {name: "Acessar Com Nome de Usuario e Senha" })
+            ).toBeInTheDocument();
+        })
+    
+        test("Input de username no documento", () => {
+            render(<Register/>, {wrapper: BrowserRouter});
+            const input = screen.getByTestId("usernameInput");
+    
+            expect(input).toBeInTheDocument();
+        })
+    
+        test("Input de password no documento", () => {
+            render(<Register/>, {wrapper: BrowserRouter});
+            const input = screen.getByTestId("passwordInput");
+    
+            expect(input).toBeInTheDocument();
+        })
+    
+        test("Input de confirm password no documento", () => {
+            render(<Register/>, {wrapper: BrowserRouter});
+            const input = screen.getByTestId("confirmpasswordInput");
+    
+            expect(input).toBeInTheDocument();
+        })
+    
+        test("Botao no documento", () => {
+            render(<Register/>, {wrapper: BrowserRouter});
+    
+            expect(screen.getByRole("button")).toBeInTheDocument();
+        })
     })
 
-    test("Input de username no documento", () => {
-        render(<Register/>, {wrapper: BrowserRouter});
-        const input = screen.getByTestId("usernameInput");
+    describe("Operações com backend não funcional", () => {
 
-        expect(input).toBeInTheDocument();
+        beforeEach(() => {
+            jest.spyOn(FetchMethods, 'post')
+                .mockImplementation((url) => {
+                    return new Promise((res) => {
+                        return setTimeout(() => {
+                            return res(null);
+                        }, 200)
+                    })
+                });
+        });
+
+        afterEach(() => {
+            FetchMethods.post.mockRestore();
+        });
+
+        test("Alerta de senhas não baterem", () => {
+            render(<Register/>, {wrapper: BrowserRouter});
+    
+            const usernameInput = screen.getByTestId("usernameInput");
+            const passwordInput = screen.getByTestId("passwordInput");
+            const confirmpasswordInput = screen.getByTestId("confirmpasswordInput");
+            const button = screen.getByRole("button");
+    
+            userEvent.type(usernameInput, "Victor");
+            userEvent.type(passwordInput, "1234");
+            userEvent.type(confirmpasswordInput, "1243");
+    
+            userEvent.click(button);
+            expect(screen.queryByText(/Senhas não batem/i)).toBeInTheDocument();
+        })
+    
+        test("Alerta ao tentar enviar com algum campo vazio", () => {
+    
+            render(<Register/>, {wrapper: BrowserRouter});
+    
+            const usernameInput = screen.getByTestId("usernameInput");
+            const passwordInput = screen.getByTestId("passwordInput");
+            const confirmpasswordInput = screen.getByTestId("confirmpasswordInput");
+            const button = screen.getByRole("button");
+    
+            userEvent.click(button);
+            expect(screen.getByText(/Preencha todos campos/i)).toBeInTheDocument();
+    
+            userEvent.type(usernameInput, "Victor");
+            userEvent.click(button);
+            expect(screen.getByText(/Preencha todos campos/i)).toBeInTheDocument();
+    
+            userEvent.type(usernameInput, "{selectall}{backspace}");
+            userEvent.type(passwordInput, "123");
+            userEvent.type(confirmpasswordInput, "123");
+            userEvent.click(button);
+            expect(screen.getByText(/Preencha todos campos/i)).toBeInTheDocument();
+    
+            userEvent.type(usernameInput, "{selectall}{backspace}");
+            userEvent.type(passwordInput, "{selectall}{backspace}");
+            userEvent.type(confirmpasswordInput, "{selectall}{backspace}");
+            userEvent.click(button);
+            expect(screen.getByText(/Preencha todos campos/i)).toBeInTheDocument();
+        })
+
+        test("Alerta ao falhar a comunicacao com servidor", async() => {
+            render(<Register/>, {wrapper: BrowserRouter});
+
+            const mensagem = "Alerta";
+    
+            const usernameInput = screen.getByTestId("usernameInput");
+            const passwordInput = screen.getByTestId("passwordInput");
+            const confirmpasswordInput = screen.getByTestId("confirmpasswordInput");
+            const button = screen.getByRole("button");
+    
+            userEvent.type(usernameInput, "Victor");
+            userEvent.type(passwordInput, "1234");
+            userEvent.type(confirmpasswordInput, "1234");
+    
+            userEvent.click(button);
+            await waitFor(() => expect(screen.queryByText(mensagem, {exact: false})).toBeInTheDocument());
+        })
     })
 
-    test("Input de password no documento", () => {
-        render(<Register/>, {wrapper: BrowserRouter});
-        const input = screen.getByTestId("passwordInput");
+    describe("Simulacoes de fetch e interação com backend funcional", () => {
 
-        expect(input).toBeInTheDocument();
-    })
+        const userExemplo = { "username": "ADMIN", "password": "ADMIN" };
+        let criouUmaVez = false;
 
-    test("Input de confirm password no documento", () => {
-        render(<Register/>, {wrapper: BrowserRouter});
-        const input = screen.getByTestId("confirmpasswordInput");
+        //simula retorno do metodo 'post'
+        beforeEach(() => {
+            jest.spyOn(FetchMethods, 'post')
+                .mockImplementation((url) => {
+                    return new Promise((res) => {
+                        return setTimeout(() => {
 
-        expect(input).toBeInTheDocument();
-    })
+                            let responseData;
 
-    test("Botao no documento", () => {
-        render(<Register/>, {wrapper: BrowserRouter});
+                            //para simular cadastro repetido
+                            if(criouUmaVez === false) {
+                                criouUmaVez = true;
+                                responseData = {
+                                    "ok": true,
+                                    "status": 201,
+                                    "json": () => Promise.resolve(userExemplo)
+                                }
+                            }
+                            else {
+                                responseData = {
+                                    "ok": true,
+                                    "status": 400,
+                                    "json": () => Promise.resolve({"message": "ja existe!"})
+                                }
+                            }
 
-        expect(screen.getByRole("button")).toBeInTheDocument();
-    })
+                            return res(responseData);
+                        }, 200)
+                    })
+                });
+        });
 
-    test("Alerta de senhas não baterem", () => {
-        render(<Register/>, {wrapper: BrowserRouter});
+        afterEach(() => {
+            FetchMethods.post.mockRestore();
+            criouUmaVez = false;
+        });
 
-        const usernameInput = screen.getByTestId("usernameInput");
-        const passwordInput = screen.getByTestId("passwordInput");
-        const confirmpasswordInput = screen.getByTestId("confirmpasswordInput");
-        const button = screen.getByRole("button");
+        test("Cadastro realizado com sucesso retorna codigo 201 e imprime mensagem de sucesso", async() => {
+            render(<Register/>, {wrapper: BrowserRouter});
 
-        userEvent.type(usernameInput, "Victor");
-        userEvent.type(passwordInput, "1234");
-        userEvent.type(confirmpasswordInput, "1243");
+            const usernameInput = screen.getByTestId("usernameInput");
+            const passwordInput = screen.getByTestId("passwordInput");
+            const confirmpasswordInput = screen.getByTestId("confirmpasswordInput");
+            const button = screen.getByRole("button");
 
-        userEvent.click(button);
-        expect(screen.queryByText(/Senhas não batem/i)).toBeInTheDocument();
-    })
+            userEvent.type(usernameInput, "victor");
+            userEvent.type(passwordInput, "12345");
+            userEvent.type(confirmpasswordInput, "12345");
+            userEvent.click(button);
 
-    test("Alerta ao tentar enviar com algum campo vazio", async() => {
+            expect(screen.queryByText(/Preencha todos campos/i)).toBeNull();
+            await waitFor( () => expect(screen.queryByText(/Sucesso/i)).toBeInTheDocument());
+        })
 
-        render(<Register/>, {wrapper: BrowserRouter});
+        test("Enviar dados de usuario ja cadastrado retorna codigo diferente de 201 e imprimir mensagem de alerta", async() => {
+            render(<Register/>, {wrapper: BrowserRouter});
 
-        const usernameInput = screen.getByTestId("usernameInput");
-        const passwordInput = screen.getByTestId("passwordInput");
-        const confirmpasswordInput = screen.getByTestId("confirmpasswordInput");
-        const button = screen.getByRole("button");
+            console.log(criouUmaVez)
 
-        userEvent.click(button);
-        expect(screen.getByText(/Preencha todos campos/i)).toBeInTheDocument();
+            const usernameInput = screen.getByTestId("usernameInput");
+            const passwordInput = screen.getByTestId("passwordInput");
+            const confirmpasswordInput = screen.getByTestId("confirmpasswordInput");
+            const button = screen.getByRole("button");
 
-        userEvent.type(usernameInput, "Victor");
-        userEvent.click(button);
-        expect(screen.getByText(/Preencha todos campos/i)).toBeInTheDocument();
+            userEvent.type(usernameInput, "victor");
+            userEvent.type(passwordInput, "12345");
+            userEvent.type(confirmpasswordInput, "12345");
+            userEvent.click(button);
 
-        userEvent.type(usernameInput, "{selectall}{backspace}");
-        userEvent.type(passwordInput, "123");
-        userEvent.type(confirmpasswordInput, "123");
-        userEvent.click(button);
-        expect(screen.getByText(/Preencha todos campos/i)).toBeInTheDocument();
+            expect(screen.queryByText(/Preencha todos campos/i)).toBeNull();
+            await waitFor( () => expect(screen.queryByText(/Sucesso/i)).toBeInTheDocument());
 
-        userEvent.type(usernameInput, "{selectall}{backspace}");
-        userEvent.type(passwordInput, "{selectall}{backspace}");
-        userEvent.type(confirmpasswordInput, "{selectall}{backspace}");
-        userEvent.click(button);
-        expect(screen.getByText(/Preencha todos campos/i)).toBeInTheDocument();
+            //simular envio novamente
+            userEvent.click(button);
 
-        userEvent.type(usernameInput, "victorr");
-        userEvent.type(passwordInput, "12345");
-        userEvent.type(confirmpasswordInput, "12345");
-        userEvent.click(button);
-        //query explora a DOM e nao lanca excessao caso nao ache
-        expect(screen.queryByText(/Preencha todos campos/i)).toBeNull();
-        await waitFor( () => expect(screen.getByText(/sucesso/i).toBeInTheDocument()) );
+            expect(screen.queryByText(/Preencha todos campos/i)).toBeNull();
+            await waitFor( () => expect(screen.getByText(/Alerta/i)).toBeInTheDocument());
+        })
     })
 });

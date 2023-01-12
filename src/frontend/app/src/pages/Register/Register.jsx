@@ -45,17 +45,27 @@ export const Register = () => {
     const response = await FetchMethods.post(caminho, data_to_send);
     console.log("Resposta:", response);
 
-    if(response) {
+    if(!response) {
+      setAlertMessage("comunicação com backend falhou")
+    }
+    else {
       const dados = await response.json();
       console.log("Dados da resposta:", dados);
 
       if( response.status !== 201 ) {
         console.log("Status da resposta diferente de 201:", dados.message);
-        setAlertMessage(dados.message);
+
+        if(dados.message) {
+          setAlertMessage(dados.message);
+        }
+        else {
+          setAlertMessage("[vazio]");
+        }
+        
       }
       else {
         console.log("Sucesso. Redirecionando para login...")
-        setSucessMessage("Criado com sucesso. Redirecionando para login...")
+        setSucessMessage("Sucesso: conta criada. Redirecionando para login...")
 
         // setTimeout(() => {
         //   navigate('/login', { replace: true });

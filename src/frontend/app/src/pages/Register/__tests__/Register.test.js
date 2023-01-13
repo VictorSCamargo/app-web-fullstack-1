@@ -45,11 +45,13 @@ describe('Componente Register', () => {
 
     describe("Operações com backend não funcional", () => {
 
+        //simula retorno do metodo 'post'
         beforeEach(() => {
             jest.spyOn(FetchMethods, 'post')
                 .mockImplementation((url) => {
                     return new Promise((res) => {
                         return setTimeout(() => {
+                            //falha na comunicação deve retornar null
                             return res(null);
                         }, 200)
                     })
@@ -124,10 +126,9 @@ describe('Componente Register', () => {
         })
     })
 
-    describe("Simulacoes de fetch e interação com backend funcional", () => {
+    describe("Simulacão de conta criada com sucesso por meio de fetch", () => {
 
-        const userExemplo = { "username": "ADMIN", "password": "ADMIN" };
-        let criouUmaVez = false;
+        const userExemplo = { "username": "GENERICO", "password": "GENERICO" };
 
         //simula retorno do metodo 'post'
         beforeEach(() => {
@@ -135,27 +136,12 @@ describe('Componente Register', () => {
                 .mockImplementation((url) => {
                     return new Promise((res) => {
                         return setTimeout(() => {
-
-                            let responseData;
-
-                            //para simular cadastro repetido
-                            if(criouUmaVez === false) {
-                                criouUmaVez = true;
-                                responseData = {
+                            const response = {
                                     "ok": true,
                                     "status": 201,
                                     "json": () => Promise.resolve(userExemplo)
                                 }
-                            }
-                            else {
-                                responseData = {
-                                    "ok": true,
-                                    "status": 400,
-                                    "json": () => Promise.resolve({"message": "ja existe!"})
-                                }
-                            }
-
-                            return res(responseData);
+                                return res(response);
                         }, 200)
                     })
                 });
@@ -163,7 +149,6 @@ describe('Componente Register', () => {
 
         afterEach(() => {
             FetchMethods.post.mockRestore();
-            criouUmaVez = false;
         });
 
         test("Cadastro realizado com sucesso retorna codigo 201 e imprime mensagem de sucesso", async() => {
@@ -180,13 +165,37 @@ describe('Componente Register', () => {
             userEvent.click(button);
 
             expect(screen.queryByText(/Preencha todos campos/i)).toBeNull();
-            await waitFor( () => expect(screen.queryByText(/Sucesso/i)).toBeInTheDocument());
+
+            await waitFor( () => expect(screen.queryByText(/Alerta/i)).toBeNull());
+            await waitFor( () => expect(screen.getByText(/Sucesso/i)).toBeInTheDocument());
         })
+    })
 
-        test("Enviar dados de usuario ja cadastrado retorna codigo diferente de 201 e imprimir mensagem de alerta", async() => {
+    describe("Simulacão de tentar criar conta ja existente por meio de fetch simulado", () => {
+
+        //simula retorno do metodo 'post'
+        beforeEach(() => {
+            jest.spyOn(FetchMethods, 'post')
+                .mockImplementation((url) => {
+                    return new Promise((res) => {
+                        return setTimeout(() => {
+                            const response = {
+                                    "ok": true,
+                                    "status": 400,
+                                    "json": () => Promise.resolve({"message": "mensagem de alerta"})
+                                }
+                                return res(response);
+                        }, 200)
+                    })
+                });
+        });
+
+        afterEach(() => {
+            FetchMethods.post.mockRestore();
+        });
+
+        test("Enviar dados de usuário já cadastrado retorna codigo diferente de 201 e imprime mensagem de alerta", async() => {
             render(<Register/>, {wrapper: BrowserRouter});
-
-            console.log(criouUmaVez)
 
             const usernameInput = screen.getByTestId("usernameInput");
             const passwordInput = screen.getByTestId("passwordInput");
@@ -199,13 +208,9 @@ describe('Componente Register', () => {
             userEvent.click(button);
 
             expect(screen.queryByText(/Preencha todos campos/i)).toBeNull();
-            await waitFor( () => expect(screen.queryByText(/Sucesso/i)).toBeInTheDocument());
 
-            //simular envio novamente
-            userEvent.click(button);
-
-            expect(screen.queryByText(/Preencha todos campos/i)).toBeNull();
+            await waitFor( () => expect(screen.queryByText(/Sucesso/i)).toBeNull()); 
             await waitFor( () => expect(screen.getByText(/Alerta/i)).toBeInTheDocument());
         })
-    })
+    });
 });

@@ -61,15 +61,10 @@ export const Register = () => {
         else {
           setAlertMessage("[vazio]");
         }
-        
       }
       else {
-        console.log("Sucesso. Redirecionando para login...")
-        setSucessMessage("Sucesso: conta criada. Redirecionando para login...")
-
-        // setTimeout(() => {
-        //   navigate('/login', { replace: true });
-        // }, 2000);
+        console.log("Sucesso: conta criada")
+        setSucessMessage("conta criada")
       }
     }
   }
@@ -117,7 +112,7 @@ export const Register = () => {
 
           {(sucessMessage !== "") ? (
             <div className="text-center">
-              <span className="txt-sucess">{sucessMessage}</span>
+              <span className="txt-sucess">Sucesso: {sucessMessage}</span>
             </div>
           ) : (
             null

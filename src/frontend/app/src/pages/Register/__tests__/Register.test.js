@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router-dom';
 import { Register } from '../Register';
+import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom'
 import { FetchMethods } from '../../../hooks/FetchMethods/FetchMethods';
 import { AlertMessages } from '../../../utils/AlertMessages';

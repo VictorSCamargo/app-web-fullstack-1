@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FormInputLine, PageContainer, CustomWrapper } from "../../components/layout_components/LayoutComponents"
 import { FetchMethods } from "../../hooks/FetchMethods/FetchMethods";
@@ -13,8 +13,6 @@ export const Register = () => {
 
   const [alertMessage, setAlertMessage] = useState(AlertMessages.vazio);
   const [sucessMessage, setSucessMessage] = useState("");
-
-  const navigate = useNavigate();
 
   async function criaUsuario(event) {
     event.preventDefault();

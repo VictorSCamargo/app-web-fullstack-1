@@ -6,4 +6,6 @@ export class SucessMessages {
     static contaCriada = "conta criada";
 
     static autenticou = "autenticado. Redirecionando...";
+
+    static senhaAlterada = "senha alterada";
 }

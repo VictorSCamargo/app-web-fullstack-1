@@ -10,8 +10,8 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
 
-  const [alertMessage, setAlertMessage] = useState("");
-  const [sucessMessage, setSucessMessage] = useState("");
+  const [alertMessage, setAlertMessage] = useState(AlertMessages.vazio);
+  const [sucessMessage, setSucessMessage] = useState(SucessMessages.vazio);
 
   const navigate = useNavigate();
 
@@ -104,7 +104,7 @@ export const Login = () => {
 
           {(sucessMessage !== "") ? (
             <div className="text-center">
-              <span className="txt-sucess">{sucessMessage}</span>
+              <span className="txt-sucess">Sucesso: {sucessMessage}</span>
             </div>
           ) : (
             null

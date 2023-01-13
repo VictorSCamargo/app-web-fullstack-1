@@ -3,13 +3,15 @@ import { useState } from "react";
 import { FormInputLine, PageContainer, CustomWrapper } from "../../components/layout_components/LayoutComponents"
 import { FetchMethods } from "../../hooks/FetchMethods/FetchMethods";
 import { BackendPaths } from "../../hooks/BackendPaths/BackendPaths";
+import { AlertMessages } from "../../utils/AlertMessages";
+import { SucessMessages } from "../../utils/SucessMessages";
 
 export const Register = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
 
-  const [alertMessage, setAlertMessage] = useState("");
+  const [alertMessage, setAlertMessage] = useState(AlertMessages.vazio);
   const [sucessMessage, setSucessMessage] = useState("");
 
   const navigate = useNavigate();
@@ -20,17 +22,17 @@ export const Register = () => {
     console.log("criaUsuario...");
 
     if( (username === "") || (password === "") || (confirmpassword === "") ) {
-      console.log("Preencha todos campos");
-      setAlertMessage("Preencha todos campos");
+      console.log(AlertMessages.preenchaTodosOsCampos);
+      setAlertMessage(AlertMessages.preenchaTodosOsCampos);
       return;
     }
     if(password !== confirmpassword) {
-      console.log("Senhas não batem");
-      setAlertMessage("Senhas não batem");
+      console.log(AlertMessages.senhasEstaoDiferentes);
+      setAlertMessage(AlertMessages.senhasEstaoDiferentes);
       return;
     }
 
-    setAlertMessage("");
+    setAlertMessage(AlertMessages.vazio);
     setSucessMessage("");
 
     const data_to_send = {
@@ -46,7 +48,7 @@ export const Register = () => {
     console.log("Resposta:", response);
 
     if(!response) {
-      setAlertMessage("comunicação com backend falhou")
+      setAlertMessage(AlertMessages.comunicacaoFalhou)
     }
     else {
       const dados = await response.json();
@@ -59,12 +61,12 @@ export const Register = () => {
           setAlertMessage(dados.message);
         }
         else {
-          setAlertMessage("[vazio]");
+          setAlertMessage(AlertMessages.naoEspecificado);
         }
       }
       else {
-        console.log("Sucesso: conta criada")
-        setSucessMessage("conta criada")
+        console.log(SucessMessages.contaCriada);
+        setSucessMessage(SucessMessages.contaCriada);
       }
     }
   }

@@ -4,42 +4,48 @@ import { BrowserRouter } from 'react-router-dom';
 import { Register } from '../Register';
 import '@testing-library/jest-dom'
 import { FetchMethods } from '../../../hooks/FetchMethods/FetchMethods';
+import { AlertMessages } from '../../../utils/AlertMessages';
+import { SucessMessages } from '../../../utils/SucessMessages';
 
 describe('Componente Register', () => {
 
     describe("Elementos no documento", () => {
         test("Link para login no documento", () => {
             render(<Register/>, {wrapper: BrowserRouter});
-            expect(
-                screen.getByRole("link", {name: "Acessar Com Nome de Usuario e Senha" })
-            ).toBeInTheDocument();
+
+            const linkIrParaLogin = screen.getByRole(
+                "link", {name: "Acessar Com Nome de Usuario e Senha" }
+                );
+
+            expect(linkIrParaLogin).toBeInTheDocument();
         })
     
         test("Input de username no documento", () => {
             render(<Register/>, {wrapper: BrowserRouter});
-            const input = screen.getByTestId("usernameInput");
+            const usernameInput = screen.getByTestId("usernameInput");
     
-            expect(input).toBeInTheDocument();
+            expect(usernameInput).toBeInTheDocument();
         })
     
         test("Input de password no documento", () => {
             render(<Register/>, {wrapper: BrowserRouter});
-            const input = screen.getByTestId("passwordInput");
+            const passwordInput = screen.getByTestId("passwordInput");
     
-            expect(input).toBeInTheDocument();
+            expect(passwordInput).toBeInTheDocument();
         })
     
         test("Input de confirm password no documento", () => {
             render(<Register/>, {wrapper: BrowserRouter});
-            const input = screen.getByTestId("confirmpasswordInput");
+            const confirmpasswordInput = screen.getByTestId("confirmpasswordInput");
     
-            expect(input).toBeInTheDocument();
+            expect(confirmpasswordInput).toBeInTheDocument();
         })
     
         test("Botao no documento", () => {
             render(<Register/>, {wrapper: BrowserRouter});
+            const enviarButton = screen.getByRole("button");
     
-            expect(screen.getByRole("button")).toBeInTheDocument();
+            expect(enviarButton).toBeInTheDocument();
         })
     })
 
@@ -75,11 +81,12 @@ describe('Componente Register', () => {
             userEvent.type(confirmpasswordInput, "1243");
     
             userEvent.click(button);
-            expect(screen.queryByText(/Senhas não batem/i)).toBeInTheDocument();
+            expect(
+                screen.queryByText(AlertMessages.senhasEstaoDiferentes, {exact: false})
+            ).toBeInTheDocument();
         })
     
         test("Alerta ao tentar enviar com algum campo vazio", () => {
-    
             render(<Register/>, {wrapper: BrowserRouter});
     
             const usernameInput = screen.getByTestId("usernameInput");
@@ -88,29 +95,35 @@ describe('Componente Register', () => {
             const button = screen.getByRole("button");
     
             userEvent.click(button);
-            expect(screen.getByText(/Preencha todos campos/i)).toBeInTheDocument();
+            expect(
+                screen.getByText(AlertMessages.preenchaTodosOsCampos, {exact: false})
+            ).toBeInTheDocument();
     
             userEvent.type(usernameInput, "Victor");
             userEvent.click(button);
-            expect(screen.getByText(/Preencha todos campos/i)).toBeInTheDocument();
+            expect(
+                screen.getByText(AlertMessages.preenchaTodosOsCampos, {exact: false})
+            ).toBeInTheDocument();
     
             userEvent.type(usernameInput, "{selectall}{backspace}");
             userEvent.type(passwordInput, "123");
             userEvent.type(confirmpasswordInput, "123");
             userEvent.click(button);
-            expect(screen.getByText(/Preencha todos campos/i)).toBeInTheDocument();
+            expect(
+                screen.getByText(AlertMessages.preenchaTodosOsCampos, {exact: false})
+            ).toBeInTheDocument();
     
             userEvent.type(usernameInput, "{selectall}{backspace}");
             userEvent.type(passwordInput, "{selectall}{backspace}");
             userEvent.type(confirmpasswordInput, "{selectall}{backspace}");
             userEvent.click(button);
-            expect(screen.getByText(/Preencha todos campos/i)).toBeInTheDocument();
+            expect(
+                screen.getByText(AlertMessages.preenchaTodosOsCampos, {exact: false})
+            ).toBeInTheDocument();
         })
 
         test("Alerta ao falhar a comunicacao com servidor", async() => {
             render(<Register/>, {wrapper: BrowserRouter});
-
-            const mensagem = "Alerta";
     
             const usernameInput = screen.getByTestId("usernameInput");
             const passwordInput = screen.getByTestId("passwordInput");
@@ -122,7 +135,9 @@ describe('Componente Register', () => {
             userEvent.type(confirmpasswordInput, "1234");
     
             userEvent.click(button);
-            await waitFor(() => expect(screen.queryByText(mensagem, {exact: false})).toBeInTheDocument());
+            await waitFor(() => expect(
+                    screen.getByText(AlertMessages.comunicacaoFalhou, {exact: false})
+                ).toBeInTheDocument());
         })
     })
 
@@ -164,10 +179,14 @@ describe('Componente Register', () => {
             userEvent.type(confirmpasswordInput, "12345");
             userEvent.click(button);
 
-            expect(screen.queryByText(/Preencha todos campos/i)).toBeNull();
+            expect(
+                screen.queryByText(AlertMessages.preenchaTodosOsCampos, {exact: false})
+            ).toBeNull();
 
             await waitFor( () => expect(screen.queryByText(/Alerta/i)).toBeNull());
-            await waitFor( () => expect(screen.getByText(/Sucesso/i)).toBeInTheDocument());
+            await waitFor( () => expect(
+                    screen.getByText(SucessMessages.contaCriada, {exact: false})
+                ).toBeInTheDocument());
         })
     })
 
@@ -207,10 +226,14 @@ describe('Componente Register', () => {
             userEvent.type(confirmpasswordInput, "12345");
             userEvent.click(button);
 
-            expect(screen.queryByText(/Preencha todos campos/i)).toBeNull();
+            expect(
+                screen.queryByText(AlertMessages.preenchaTodosOsCampos, {exact: false})
+            ).toBeNull();
 
-            await waitFor( () => expect(screen.queryByText(/Sucesso/i)).toBeNull()); 
-            await waitFor( () => expect(screen.getByText(/Alerta/i)).toBeInTheDocument());
+            await waitFor( () => expect(screen.queryByText(/Sucesso/i)).toBeNull());
+            await waitFor( () => expect(
+                screen.getByText(/Alerta/i, {exact: false})
+                ).toBeInTheDocument());
         })
     });
 });

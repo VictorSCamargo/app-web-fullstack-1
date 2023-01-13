@@ -232,7 +232,7 @@ describe('Componente Register', () => {
 
             await waitFor( () => expect(screen.queryByText(/Sucesso/i)).toBeNull());
             await waitFor( () => expect(
-                screen.getByText(/Alerta/i, {exact: false})
+                screen.getByText(/Alerta/i)
                 ).toBeInTheDocument());
         })
     });

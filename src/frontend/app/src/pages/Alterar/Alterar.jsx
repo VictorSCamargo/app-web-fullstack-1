@@ -1,18 +1,18 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FormInputLine, PageContainer, CustomWrapper } from "../../components/layout_components/LayoutComponents";
 import { FetchMethods } from "../../hooks/FetchMethods/FetchMethods";
 import { BackendPaths } from "../../hooks/BackendPaths/BackendPaths";
+import { AlertMessages } from "../../utils/AlertMessages";
+import { SucessMessages } from "../../utils/SucessMessages";
 
 export const Alterar = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
 
-  const [alertMessage, setAlertMessage] = useState("");
-  const [sucessMessage, setSucessMessage] = useState("");
-
-  const navigate = useNavigate()
+  const [alertMessage, setAlertMessage] = useState(AlertMessages.vazio);
+  const [sucessMessage, setSucessMessage] = useState(SucessMessages.vazio);
 
   async function requisitarAlteracaoDeSenha(event) {
     event.preventDefault();
@@ -20,17 +20,17 @@ export const Alterar = () => {
     console.log("requisitarAlteracaoDeSenha...")
 
     if( (username === "") || (password === "") || (confirmpassword === "") ) {
-      console.log("Preencha todos campos");
-      setAlertMessage("Preencha todos campos");
+      console.log(AlertMessages.preenchaTodosOsCampos);
+      setAlertMessage(AlertMessages.preenchaTodosOsCampos);
       return;
     }
     if(password !== confirmpassword) {
-      console.log("Senhas não batem");
-      setAlertMessage("Senhas não batem");
+      console.log(AlertMessages.senhasEstaoDiferentes);
+      setAlertMessage(AlertMessages.senhasEstaoDiferentes);
       return;
     }
-    setAlertMessage("");
-    setSucessMessage("");
+    setAlertMessage(AlertMessages.vazio);
+    setSucessMessage(SucessMessages.vazio);
 
     const data_to_send = {
         "username": username,
@@ -44,22 +44,26 @@ export const Alterar = () => {
     const response = await FetchMethods.post(caminho, data_to_send);
     console.log("Resposta:", response);
 
-    if(response){
+    if(!response) {
+      setAlertMessage(AlertMessages.comunicacaoFalhou);
+    }
+    else {
       const dados = await response.json();
       console.log("Dados de resposta:", dados);
 
       if(response.status !== 200) {
         console.log("Status da resposta diferente de 200:", dados.message);
-        setAlertMessage(dados.message);
+
+        if(dados.message) {
+          setAlertMessage(dados.message);
+        }
+        else {
+          setAlertMessage(AlertMessages.naoEspecificado);
+        }
       }
       else {
-        setSucessMessage("Senha alterada com sucesso. Redirecinando para login...");
-
-        console.log("Sucesso. Redirecinando para login...");
-
-        setTimeout(() => {
-          navigate('/login', { replace: true });
-        }, 2000);
+        setSucessMessage(SucessMessages.senhaAlterada);
+        console.log(SucessMessages.senhaAlterada);
       }
     }
   }
@@ -109,7 +113,7 @@ export const Alterar = () => {
 
           {(sucessMessage !== "") ? (
             <div className="text-center">
-              <span className="txt-sucess">{sucessMessage}</span>
+              <span className="txt-sucess">Sucesso: {sucessMessage}</span>
             </div>
           ) : (
             null

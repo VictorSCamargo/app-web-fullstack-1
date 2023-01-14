@@ -1,4 +1,5 @@
 import React from 'react';
+import { AlertMessages } from '../../utils/AlertMessages';
 import { PostComponent } from "./PostComponent";
 
 export const PostList = (props) => {
@@ -23,7 +24,7 @@ export const PostList = (props) => {
                 {props.posts ? (
                     criarLinhas()
                 ) : (
-                    <li key={"0"}><PostComponent username={"[servidor]"} texto={"Nenhuma postagem encontrada!"}></PostComponent></li>
+                    <li key={"0"}><PostComponent username={"[servidor]"} texto={AlertMessages.nenhumaPostagem}></PostComponent></li>
                 )}
             </ul>
         </>

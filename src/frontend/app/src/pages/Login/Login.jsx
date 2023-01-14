@@ -3,13 +3,15 @@ import { CustomWrapper, FormInputLine, PageContainer } from "../../components/la
 import { Link, useNavigate } from 'react-router-dom';
 import { FetchMethods } from "../../hooks/FetchMethods/FetchMethods";
 import { BackendPaths } from "../../hooks/BackendPaths/BackendPaths";
+import { AlertMessages } from "../../utils/AlertMessages";
+import { SucessMessages } from "../../utils/SucessMessages";
 
 export const Login = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
 
-  const [alertMessage, setAlertMessage] = useState("");
-  const [sucessMessage, setSucessMessage] = useState("");
+  const [alertMessage, setAlertMessage] = useState(AlertMessages.vazio);
+  const [sucessMessage, setSucessMessage] = useState(SucessMessages.vazio);
 
   const navigate = useNavigate();
 
@@ -19,11 +21,11 @@ export const Login = () => {
     console.log("autenticarLogin...")
 
     if( (username === "") || (password === "") ){
-      setAlertMessage("Preencha todos campos");
+      setAlertMessage(AlertMessages.preenchaTodosOsCampos);
       return;
     }
-    setAlertMessage("");
-    setSucessMessage("");
+    setAlertMessage(AlertMessages.vazio);
+    setSucessMessage(SucessMessages.vazio);
     
     const data_to_send = {
       "username": username,
@@ -35,29 +37,33 @@ export const Login = () => {
     console.log("Caminho:", caminho);
 
     let response = await FetchMethods.post(caminho, data_to_send);
-    console.log("Resposta:", response)
+    console.log("Resposta:", response);
 
     if(!response) {
-      alert("Falha ao comunicar com backend: logando com usuário genérico para visualização da página de postagens.");
+      setAlertMessage(AlertMessages.comunicacaoFalhou);
+
+      alert("Falha ao comunicar com backend: logando com usuário genérico para visualização da página de postagens");
       navigate('/post', { replace: true, state: {"userLogado": "User Generico"} });
     }
     else {
       const data_received = await response.json();
       console.log("Dados da resposta:", data_received);
 
-      if (data_received.username) {
-
-        console.log("User logou:", data_received.username);
-        console.log("Redirecionando para postagens...");
-
-        setSucessMessage("Logado com sucesso. Redirecionando...")
+      if(response.status !== 200) {
+        if(data_received.message) {
+          setAlertMessage(data_received.message);
+        }
+        else {
+          setAlertMessage(AlertMessages.naoEspecificado);
+        }
+      }
+      else {
+        console.log(SucessMessages.autenticou);
+        setSucessMessage(SucessMessages.autenticou);
 
         setTimeout(() => {
           navigate('/post', { replace: true, state: {"userLogado": data_received.username} });
         }, 2000);
-      }
-      else {
-        setAlertMessage(data_received.message);
       }
     }
   }
@@ -98,7 +104,7 @@ export const Login = () => {
 
           {(sucessMessage !== "") ? (
             <div className="text-center">
-              <span className="txt-sucess">{sucessMessage}</span>
+              <span className="txt-sucess">Sucesso: {sucessMessage}</span>
             </div>
           ) : (
             null

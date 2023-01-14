@@ -1,18 +1,18 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FormInputLine, PageContainer, CustomWrapper } from "../../components/layout_components/LayoutComponents"
 import { FetchMethods } from "../../hooks/FetchMethods/FetchMethods";
 import { BackendPaths } from "../../hooks/BackendPaths/BackendPaths";
+import { AlertMessages } from "../../utils/AlertMessages";
+import { SucessMessages } from "../../utils/SucessMessages";
 
 export const Register = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
 
-  const [alertMessage, setAlertMessage] = useState("");
+  const [alertMessage, setAlertMessage] = useState(AlertMessages.vazio);
   const [sucessMessage, setSucessMessage] = useState("");
-
-  const navigate = useNavigate();
 
   async function criaUsuario(event) {
     event.preventDefault();
@@ -20,17 +20,17 @@ export const Register = () => {
     console.log("criaUsuario...");
 
     if( (username === "") || (password === "") || (confirmpassword === "") ) {
-      console.log("Preencha todos campos");
-      setAlertMessage("Preencha todos campos");
+      console.log(AlertMessages.preenchaTodosOsCampos);
+      setAlertMessage(AlertMessages.preenchaTodosOsCampos);
       return;
     }
     if(password !== confirmpassword) {
-      console.log("Senhas não batem");
-      setAlertMessage("Senhas não batem");
+      console.log(AlertMessages.senhasEstaoDiferentes);
+      setAlertMessage(AlertMessages.senhasEstaoDiferentes);
       return;
     }
 
-    setAlertMessage("");
+    setAlertMessage(AlertMessages.vazio);
     setSucessMessage("");
 
     const data_to_send = {
@@ -45,21 +45,26 @@ export const Register = () => {
     const response = await FetchMethods.post(caminho, data_to_send);
     console.log("Resposta:", response);
 
-    if(response) {
+    if(!response) {
+      setAlertMessage(AlertMessages.comunicacaoFalhou)
+    }
+    else {
       const dados = await response.json();
       console.log("Dados da resposta:", dados);
 
       if( response.status !== 201 ) {
-        console.log("Status da resposta diferente de 200:", dados.message);
-        setAlertMessage(dados.message);
+        console.log("Status da resposta diferente de 201:", dados.message);
+
+        if(dados.message) {
+          setAlertMessage(dados.message);
+        }
+        else {
+          setAlertMessage(AlertMessages.naoEspecificado);
+        }
       }
       else {
-        console.log("Sucesso. Redirecionando para login...")
-        setSucessMessage("Criado com sucesso. Redirecionando para login...")
-
-        setTimeout(() => {
-          navigate('/login', { replace: true });
-        }, 2000);
+        console.log(SucessMessages.contaCriada);
+        setSucessMessage(SucessMessages.contaCriada);
       }
     }
   }
@@ -107,7 +112,7 @@ export const Register = () => {
 
           {(sucessMessage !== "") ? (
             <div className="text-center">
-              <span className="txt-sucess">{sucessMessage}</span>
+              <span className="txt-sucess">Sucesso: {sucessMessage}</span>
             </div>
           ) : (
             null

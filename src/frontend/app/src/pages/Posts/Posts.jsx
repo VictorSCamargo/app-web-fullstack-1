@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { PostList }  from "../../components/post_components/PostList";
 import { FetchMethods } from "../../hooks/FetchMethods/FetchMethods";
 import { BackendPaths } from "../../hooks/BackendPaths/BackendPaths"; 
+import { AlertMessages } from "../../utils/AlertMessages";
 import "./styles.css"
 
 const postagensExemplo = [
@@ -17,7 +18,8 @@ export const Posts = (props) => {
     const [text, setText] = useState("");
     const [titulo, setTitulo] = useState("");
     const [postagens, setPostagens] = useState(null);
-    const [alertMessage, setAlertMessage] = useState("");
+  
+    const [alertMessage, setAlertMessage] = useState(AlertMessages.vazio);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -67,10 +69,10 @@ export const Posts = (props) => {
       console.log("criarPostagem...");
 
       if( (titulo === "") || (text === "") ) {
-        setAlertMessage("Preencha todos campos");
+        setAlertMessage(AlertMessages.preenchaTodosOsCampos);
         return;
       }
-      setAlertMessage("");
+      setAlertMessage(AlertMessages.vazio);
 
       const data_to_send = {
         "username": userLogado,
@@ -87,7 +89,7 @@ export const Posts = (props) => {
       console.log("Resposta:", response)
   
       if(!response) {
-        setAlertMessage("Comunicação com backend falhou");
+        setAlertMessage(AlertMessages.comunicacaoFalhou);
       }
       else {        
         const dados = await response.json();
@@ -129,7 +131,7 @@ export const Posts = (props) => {
       <>
         {userLogado === null ? (
           <div className="post-page-wrapper">
-            <h1 className="post-user-title">Autentique-se para ver as postagens!</h1>
+            <h1 className="post-user-title">{AlertMessages.autentiqueseParaVer}</h1>
           </div>
         ) : (
           <div className="post-page-wrapper">

@@ -10,4 +10,7 @@ export class AlertMessages {
     static preenchaTodosOsCampos = "preencha todos os campos";
     static senhasEstaoDiferentes = "senhas estão diferentes";
     static contaComUsernameJaExiste = "conta com username especificado já existe";
+
+    static autentiqueseParaVer = "Autentique-se para ver as postagens!";
+    static nenhumaPostagem = "Nenhuma postagem encontrada!";
 }

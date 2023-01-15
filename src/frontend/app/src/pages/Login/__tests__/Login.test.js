@@ -17,6 +17,7 @@ describe('Componente Login', () => {
             expect(screen.getByTestId("form-login")).toBeInTheDocument();
         })
 
+
         test("Link para criar conta no documento", () => {
             render(<Login/>, {wrapper: BrowserRouter});
             expect(screen.getByRole("link", { name: "Criar conta" })).toBeInTheDocument();

@@ -10,6 +10,14 @@ import { SucessMessages } from '../../../utils/SucessMessages';
 describe('Componente Alterar', () => {
 
     describe("Elementos no documento", () => {
+    
+        test("Formulario no documento", () => {
+            render(<Alterar/>, {wrapper: BrowserRouter});
+
+            expect(screen.getByTestId("form-alterar")).toBeInTheDocument();
+        })
+
+
         test("Link para login no documento", () => {
             render(<Alterar/>, {wrapper: BrowserRouter});
             expect(

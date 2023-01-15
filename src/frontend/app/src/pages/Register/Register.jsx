@@ -72,7 +72,7 @@ export const Register = () => {
   return (
     <PageContainer>
       <CustomWrapper>
-        <form className="login-form" onSubmit={criaUsuario}>
+        <form className="login-form" onSubmit={criaUsuario} data-testid="form-register">
           <span className="login-form-title">Criar Conta</span>
 
           <FormInputLine

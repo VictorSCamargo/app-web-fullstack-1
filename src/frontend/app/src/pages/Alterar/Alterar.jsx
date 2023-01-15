@@ -71,7 +71,7 @@ export const Alterar = () => {
   return (
     <PageContainer>
       <CustomWrapper>
-        <form className="login-form" onSubmit={requisitarAlteracaoDeSenha}>
+        <form className="login-form" onSubmit={requisitarAlteracaoDeSenha} data-testid="form-alterar">
           <span className="login-form-title">Alterar Senha</span>
 
           <FormInputLine

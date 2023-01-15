@@ -71,7 +71,7 @@ export const Login = () => {
   return (
     <PageContainer>
       <CustomWrapper>
-        <form className="login-form" onSubmit={autenticarLogin}>
+        <form className="login-form" onSubmit={autenticarLogin} data-testid="form-login">
 
           <span className="login-form-title">Bem Vindo!</span>
 

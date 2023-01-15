@@ -10,6 +10,13 @@ import { SucessMessages } from '../../../utils/SucessMessages';
 describe('Componente Login', () => {
 
     describe("Elementos no documento", () => {
+
+        test("Formulario no documento", () => {
+            render(<Login/>, {wrapper: BrowserRouter});
+
+            expect(screen.getByTestId("form-login")).toBeInTheDocument();
+        })
+
         test("Link para criar conta no documento", () => {
             render(<Login/>, {wrapper: BrowserRouter});
             expect(screen.getByRole("link", { name: "Criar conta" })).toBeInTheDocument();

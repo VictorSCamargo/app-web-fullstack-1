@@ -10,6 +10,13 @@ import { SucessMessages } from '../../../utils/SucessMessages';
 describe('Componente Register', () => {
 
     describe("Elementos no documento", () => {
+
+        test("Formulario no documento", () => {
+            render(<Register/>, {wrapper: BrowserRouter});
+
+            expect(screen.getByTestId("form-register")).toBeInTheDocument();
+        })
+
         test("Link para login no documento", () => {
             render(<Register/>, {wrapper: BrowserRouter});
 

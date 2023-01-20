@@ -4,6 +4,8 @@ import com.example.demo.entity.ErrorMessage;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.entity.dto.UserDTO;
 import com.example.demo.service.UserService;
+import com.example.demo.utils.AlertMessages;
+import javafx.scene.control.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +18,16 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public UserController(UserService service) {
+        this.userService = service;
+    }
 
     @GetMapping
     public ResponseEntity<List<UserEntity>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.findALl());
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
     }
 
     @GetMapping("/{id}")
@@ -45,7 +51,7 @@ public class UserController {
         else {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorMessage("Usuario com esse nome ja existe"));
+                    .body(new ErrorMessage(AlertMessages.USERNAME_EM_USO));
         }
     }
 
@@ -79,13 +85,13 @@ public class UserController {
         if(usersWithSameUsername.isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(new ErrorMessage("Username nao encontrado na base"));
+                    .body(new ErrorMessage(AlertMessages.USER_NAO_ENCONTRADO));
         }
 
         UserEntity foundUserEntity = usersWithSameUsername.get(0);
 
         if(!foundUserEntity.getPassword().equals(userDTO.getPassword())) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage("Senha incorreta"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(AlertMessages.SENHA_INCORRETA));
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(foundUserEntity);
@@ -99,7 +105,7 @@ public class UserController {
         if(usersWithSameUsername.isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(new ErrorMessage("Username nao encontrado na base"));
+                    .body(new ErrorMessage(AlertMessages.USER_NAO_ENCONTRADO));
         }
 
         UserEntity foundUserEntity = usersWithSameUsername.get(0);

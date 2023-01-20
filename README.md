@@ -43,7 +43,7 @@ Não há preocupação em configurar o banco de dados MongoDB, pois roda remotam
 
 #### Opção 2: Java com springboot e PostgreSQL
 
-- Abra o diretório `backend/postgresql-springboot` com [IntelliJ](https://www.jetbrains.com/pt-br/idea/). A IDE deverá instalar dependências automaticamente e facilitará a execução da aplicação;
+- Abra o diretório `backend/springboot-postgresql` com [IntelliJ](https://www.jetbrains.com/pt-br/idea/). A IDE deverá instalar dependências automaticamente e facilitará a execução da aplicação;
 - Tenha instalado o [Java JDK 8](https://www.oracle.com/br/java/technologies/javase/javase8-archive-downloads.html) e configure a IDE para buildar o projeto com o Java 8;
 - Tenha instalado [ProstgreSQL](https://www.postgresql.org/);
 - Acesse o diretorio `backend\postgresql-springboot\src\main\resources` e edite o arquivo `application.properties`. Altere as linhas `spring.datasource.username` e `spring.datasource.password`, colocando os dados de acesso ao PostgreSQL instalado no seu computador;

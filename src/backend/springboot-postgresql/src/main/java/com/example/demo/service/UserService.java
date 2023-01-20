@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.entity.dto.UserDTO;
 import com.example.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,10 +11,13 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    public List<UserEntity> findALl() { return userRepository.findAll(); }
+    public UserService(UserRepository repository) {
+        this.userRepository = repository;
+    }
+
+    public List<UserEntity> findAll() { return userRepository.findAll(); }
 
     public List<UserEntity> findAllByUsername(String username) {
         return userRepository.findAllByUsername(username);

@@ -5,10 +5,45 @@ import { Posts } from '../Posts';
 import { AlertMessages } from '../../../utils/AlertMessages';
 import { FetchMethods } from '../../../hooks/FetchMethods/FetchMethods';
 import '@testing-library/jest-dom'
+import { act } from 'react-dom/test-utils';
 
 describe('Componente Posts', () => {
 
+    // oculta "console.log", "console.debug" e "alert"
+    beforeAll(() => {
+        jest.spyOn(console, 'log').mockImplementation(jest.fn());
+        jest.spyOn(console, 'debug').mockImplementation(jest.fn());
+        jest.spyOn(global, 'alert').mockImplementation(() => {});
+    });
+
     describe("Paginas diferentes se o usuario estiver logado", () => {
+
+        beforeEach(() => {
+            jest.spyOn(FetchMethods, 'get')
+                .mockImplementation((url) => {
+                    return new Promise((res) => {
+                        return setTimeout(() => {
+                            const response = null;
+                                return res(response);
+                        }, 200)
+                    })
+                });
+            
+            jest.spyOn(FetchMethods, 'post')
+            .mockImplementation((url) => {
+                return new Promise((res) => {
+                    return setTimeout(() => {
+                        const response = null;
+                            return res(response);
+                    }, 200)
+                })
+            });
+        });
+
+        afterEach(() => {
+            FetchMethods.post.mockRestore();
+            FetchMethods.get.mockRestore();
+        });
 
         test("Acessar pagina sem prop de usuarioLogado mostra alerta de redirecionamento", () => {
             render(<Posts/>, {wrapper: BrowserRouter});
@@ -24,6 +59,33 @@ describe('Componente Posts', () => {
     describe("Com a pagina renderizada e usuário logado", () => {
 
         describe("Componentes no documento", () => {
+
+            beforeEach(() => {
+                jest.spyOn(FetchMethods, 'get')
+                    .mockImplementation((url) => {
+                        return new Promise((res) => {
+                            return setTimeout(() => {
+                                const response = null;
+                                    return res(response);
+                            }, 200)
+                        })
+                    });
+                
+                jest.spyOn(FetchMethods, 'post')
+                .mockImplementation((url) => {
+                    return new Promise((res) => {
+                        return setTimeout(() => {
+                            const response = null;
+                                return res(response);
+                        }, 200)
+                    })
+                });
+            });
+    
+            afterEach(() => {
+                FetchMethods.post.mockRestore();
+                FetchMethods.get.mockRestore();
+            });
 
             test("Botao de deslogar no documento", () => {
                 render(<Posts userLogado={"Victor"}/>, {wrapper: BrowserRouter});
@@ -53,6 +115,33 @@ describe('Componente Posts', () => {
         });
 
         describe("Deslogar", () => {
+
+            beforeEach(() => {
+                jest.spyOn(FetchMethods, 'get')
+                    .mockImplementation((url) => {
+                        return new Promise((res) => {
+                            return setTimeout(() => {
+                                const response = null;
+                                    return res(response);
+                            }, 200)
+                        })
+                    });
+                
+                jest.spyOn(FetchMethods, 'post')
+                .mockImplementation((url) => {
+                    return new Promise((res) => {
+                        return setTimeout(() => {
+                            const response = null;
+                                return res(response);
+                        }, 200)
+                    })
+                });
+            });
+    
+            afterEach(() => {
+                FetchMethods.post.mockRestore();
+                FetchMethods.get.mockRestore();
+            });
 
             test("Clicar em deslogar muda para tela de pedir autenticacao", () => {
                 render(<Posts userLogado={"Victor"}/>, {wrapper: BrowserRouter});
@@ -112,16 +201,16 @@ describe('Componente Posts', () => {
 
         describe("Simulação de backend funcional com postagens", () => {
 
-            const novaPostagemGenerica = {"username": "Victor", "titulo": "Exemplo", "texto": "texto da postagem..."};
+            const novaPostagemGenerica = {"key": 4, "username": "Victor", "titulo": "Exemplo", "texto": "texto da postagem..."};
 
             let postagensExemplo;
 
             beforeEach(() => {
 
                 postagensExemplo = [
-                    {"username": "Victor", "titulo": "Postagem1", "texto": "texto da postagem..."},
-                    {"username": "Victor", "titulo": "Postagem2", "texto": "texto da postagem..."},
-                    {"username": "Victor", "titulo": "Postagem3", "texto": "texto da postagem..."}
+                    {"key": 1, "username": "Victor", "titulo": "Postagem1", "texto": "texto da postagem..."},
+                    {"key": 2, "username": "Victor", "titulo": "Postagem2", "texto": "texto da postagem..."},
+                    {"key": 3, "username": "Victor", "titulo": "Postagem3", "texto": "texto da postagem..."}
                 ];
 
                 jest.spyOn(FetchMethods, 'get')
@@ -160,7 +249,9 @@ describe('Componente Posts', () => {
             });
 
             test("Enviar sem algum campo preenchido gera alerta", () => {
-                render(<Posts userLogado={"Victor"}/>, {wrapper: BrowserRouter});
+                act(() => {
+                    render(<Posts userLogado={"Victor"}/>, {wrapper: BrowserRouter});
+                });
 
                 const inputTitulo = screen.getByPlaceholderText("postagem");
                 const inputTexto = screen.getByPlaceholderText("Fale sobre.");
@@ -191,7 +282,9 @@ describe('Componente Posts', () => {
             })
 
             test("Pagina ao renderizar carrega postagens do servidor", async() => {
-                render(<Posts userLogado={"Victor"}/>, {wrapper: BrowserRouter});
+                act(() => {
+                    render(<Posts userLogado={"Victor"}/>, {wrapper: BrowserRouter});
+                });
 
                 function timeout(ms) {
                     return new Promise(resolve => setTimeout(resolve, ms));
@@ -206,7 +299,9 @@ describe('Componente Posts', () => {
             });
 
             test("Postagem criada com sucesso carrega postagens do servidor e a ultima criada", async() => {
-                render(<Posts userLogado={"Victor"}/>, {wrapper: BrowserRouter});
+                act(() => {
+                    render(<Posts userLogado={"Victor"}/>, {wrapper: BrowserRouter});
+                });
 
                 const inputTitulo = screen.getByPlaceholderText("postagem");
                 const inputTexto = screen.getByPlaceholderText("Fale sobre.");
@@ -214,7 +309,10 @@ describe('Componente Posts', () => {
 
                 userEvent.type(inputTitulo, "Exemplo");
                 userEvent.type(inputTexto, "texto da postagem...");
-                userEvent.click(botaoEnviar);
+
+                act(() => {
+                    userEvent.click(botaoEnviar);
+                });
 
                 await waitFor(() => expect(
                     screen.getByText(/Victor postou "Exemplo"/i)

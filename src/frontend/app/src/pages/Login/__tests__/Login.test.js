@@ -9,6 +9,13 @@ import { SucessMessages } from '../../../utils/SucessMessages';
 
 describe('Componente Login', () => {
 
+    // oculta "console.log", "console.debug" e alert
+    beforeAll(() => {
+        jest.spyOn(console, 'log').mockImplementation(jest.fn());
+        jest.spyOn(console, 'debug').mockImplementation(jest.fn());
+        jest.spyOn(window, 'alert').mockImplementation(jest.fn());
+    });
+
     describe("Elementos no documento", () => {
 
         test("Formulario no documento", () => {

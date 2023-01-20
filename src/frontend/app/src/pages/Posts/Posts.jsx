@@ -7,10 +7,10 @@ import { AlertMessages } from "../../utils/AlertMessages";
 import "./styles.css"
 
 const postagensExemplo = [
-  {"username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
-  {"username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
-  {"username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
-  {"username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
+  {"key": 1, "username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
+  {"key": 2, "username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
+  {"key": 3, "username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
+  {"key": 4, "username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
 ]
 
 export const Posts = (props) => {

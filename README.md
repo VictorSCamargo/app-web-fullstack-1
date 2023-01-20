@@ -1,10 +1,14 @@
 # App Web - Fórum simplificado de postagens 
 
-Protótipo de fórum para compartilhamento de postagens, semelhante ao Twitter, com sistema de login, registro, alteração de senha e a página para realização e visualização de postagens.
+### Imagens e vídeo do projeto
 
 Imagens exemplo na [pasta de imagens](imagens/). Há, também, o [vídeo entregue durante a disciplina de programação web](https://youtu.be/cDKEfB4eEh8), que está desatualizado. Porém mostra as funcionalidades gerais. A entrega referida no vídeo encontra-se em [outra branch](https://github.com/VictorSCamargo/app-web-fullstack-1/tree/entrega-disciplina-web-2022-2).
 
 Projeto em desenvolvimento para fins didáticos e desenvolvimento de habilidades pessoais.
+
+### O que é
+
+Protótipo de fórum para compartilhamento de postagens, semelhante ao Twitter, com sistema de login, registro, alteração de senha e a página para realização e visualização de postagens.
 
 ## Habilidades aplicadas
 

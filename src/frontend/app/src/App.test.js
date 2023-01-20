@@ -6,6 +6,13 @@ import { AppRoutes } from './routes/AppRoutes';
 
 describe("Componente App: testes de integração", () => {
 
+    // oculta "console.log", "console.debug" e "alert"
+    beforeAll(() => {
+        jest.spyOn(console, 'log').mockImplementation(jest.fn());
+        jest.spyOn(console, 'debug').mockImplementation(jest.fn());
+        jest.spyOn(window, 'alert').mockImplementation(jest.fn());
+    });
+
     test("Pagina inicial é a de login", () => {
         render(
             <MemoryRouter initialEntries={["/login"]}>

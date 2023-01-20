@@ -6,10 +6,17 @@ export const PostList = (props) => {
 
     function criarLinhas() {
 
+        let key_generica = 0;
+
+        function atribuiKeyGenerica() {
+            key_generica += 1;
+            return key_generica;
+        }
+
         let postsOrdenados = props.posts.slice(0).reverse();
 
         const linhas_construidas = postsOrdenados.map(postagem => (
-            <li key={ postagem._id ? postagem._id : postagem.id}>
+            <li key={ postagem.key }>
                 <PostComponent username={postagem.username} texto={postagem.texto} titulo={postagem.titulo}></PostComponent>
             </li>
             )

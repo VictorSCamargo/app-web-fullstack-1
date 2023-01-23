@@ -5,19 +5,25 @@ import { FetchMethods } from "../../hooks/FetchMethods/FetchMethods";
 import { BackendPaths } from "../../hooks/BackendPaths/BackendPaths"; 
 import { AlertMessages } from "../../utils/AlertMessages";
 import "./styles.css"
+import React from "react";
+import { PostObjectType } from "../../types/PostObjectType";
 
-const postagensExemplo = [
-  {"key": 1, "username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
-  {"key": 2, "username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
-  {"key": 3, "username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
-  {"key": 4, "username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
+type PostsType = {
+  userLogado?: string
+}
+
+const postagensExemplo: PostObjectType[] = [
+  {"username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
+  {"username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
+  {"username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
+  {"username": "Victor", "titulo": "Ola!", "texto": "texto da postagem..."},
 ]
 
-export const Posts = (props) => {
-    const [userLogado, setUserLogado] = useState(null);
+export const Posts = (props: PostsType) => {
+    const [userLogado, setUserLogado] = useState("");
     const [text, setText] = useState("");
     const [titulo, setTitulo] = useState("");
-    const [postagens, setPostagens] = useState(null);
+    const [postagens, setPostagens] = useState<PostObjectType[]>();
   
     const [alertMessage, setAlertMessage] = useState(AlertMessages.vazio);
 
@@ -25,7 +31,7 @@ export const Posts = (props) => {
     const navigate = useNavigate();
 
     const deslogarUsuario = useCallback(() => {
-      setUserLogado(null);
+      setUserLogado("");
 
       setTimeout(() => {
         navigate('/login', { replace: true });
@@ -63,7 +69,7 @@ export const Posts = (props) => {
       verificaUserLogado()
     }, [verificaUserLogado]);
 
-    async function criarPostagem(event) {
+    async function criarPostagem(event: { preventDefault: () => void; }) {
       event.preventDefault();
 
       console.log("criarPostagem...");
@@ -74,7 +80,7 @@ export const Posts = (props) => {
       }
       setAlertMessage(AlertMessages.vazio);
 
-      const data_to_send = {
+      const data_to_send: PostObjectType = {
         "username": userLogado,
         "titulo": titulo,
         "texto": text
@@ -129,7 +135,7 @@ export const Posts = (props) => {
 
     return (
       <>
-        {userLogado === null ? (
+        {userLogado === "" ? (
           <div className="post-page-wrapper">
             <h1 className="post-user-title">{AlertMessages.autentiqueseParaVer}</h1>
           </div>

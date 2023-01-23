@@ -1,19 +1,27 @@
 import React from 'react';
+import { PostObjectType } from '../../types/PostObjectType';
 import { AlertMessages } from '../../utils/AlertMessages';
 import { PostComponent } from "./PostComponent";
 
 type PostListProps = {
-    posts: {
-        id?: number,
-        username: string,
-        titulo: string,
-        texto: string
-    }[]
+    posts: PostObjectType[] | undefined
 }
 
 export const PostList = (props: PostListProps) => {
 
     function criarLinhas() {
+
+        if(props.posts == null){
+            return (
+                <li key={"0"}>
+                    <PostComponent 
+                        username={"[servidor]"}
+                        texto={AlertMessages.nenhumaPostagem}
+                        titulo={"Mensagem"}
+                    />
+                </li>
+            );
+        }
 
         let key_generica = 0;
 
@@ -37,17 +45,7 @@ export const PostList = (props: PostListProps) => {
     return (
         <>
             <ul className="post-list">
-                {props.posts ? (
-                    criarLinhas()
-                ) : (
-                    <li key={"0"}>
-                        <PostComponent 
-                            username={"[servidor]"}
-                            texto={AlertMessages.nenhumaPostagem}
-                            titulo={"Mensagem"}
-                        />
-                    </li>
-                )}
+                {criarLinhas()}
             </ul>
         </>
     );

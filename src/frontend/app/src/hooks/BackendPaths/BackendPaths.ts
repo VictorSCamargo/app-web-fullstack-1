@@ -10,9 +10,9 @@ export class BackendPaths {
 
     static defaultUrl = new BackendPath(URL_BACKEND_PATH);
 
-    static usersUrl = new BackendPath(this.defaultUrl + "/users");
-    static verifyUserUrl = new BackendPath(this.usersUrl + "/verify-user");
-    static updatePasswordUrl = new BackendPath(this.usersUrl + "/update-password");
+    static usersUrl = new BackendPath(this.defaultUrl.getPath() + "/users");
+    static verifyUserUrl = new BackendPath(this.usersUrl.getPath() + "/verify-user");
+    static updatePasswordUrl = new BackendPath(this.usersUrl.getPath() + "/update-password");
 
-    static postsUrl = new BackendPath(this.defaultUrl + "/posts");
+    static postsUrl = new BackendPath(this.defaultUrl.getPath() + "/posts");
 }

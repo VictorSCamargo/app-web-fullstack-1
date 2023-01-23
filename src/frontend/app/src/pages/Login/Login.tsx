@@ -5,6 +5,7 @@ import { FetchMethods } from "../../hooks/FetchMethods/FetchMethods";
 import { BackendPaths } from "../../hooks/BackendPaths/BackendPaths";
 import { AlertMessages } from "../../utils/AlertMessages";
 import { SucessMessages } from "../../utils/SucessMessages";
+import React from "react";
 
 export const Login = () => {
   const [password, setPassword] = useState("");
@@ -15,7 +16,7 @@ export const Login = () => {
 
   const navigate = useNavigate();
 
-  async function autenticarLogin(event) {
+  async function autenticarLogin(event: { preventDefault: () => void; }) {
     event.preventDefault();
 
     console.log("autenticarLogin...")
@@ -79,14 +80,14 @@ export const Login = () => {
             inputLabel="Username"
             variableName="usernameInput"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
           />
 
           <FormInputLine
             inputLabel="Password"
             variableName="passwordInput"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             type="password"
           />
 

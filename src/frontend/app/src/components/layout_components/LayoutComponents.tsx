@@ -12,7 +12,7 @@ type CustomWrapperProps = {
 type FormInputLineProps = {
     inputLabel: string,
     variableName: string,
-    onChange: () => void,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     value: string,
     type?: string
 };

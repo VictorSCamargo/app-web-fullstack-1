@@ -1,6 +1,23 @@
+import React from 'react';
 import './styles.css';
 
-export const PageContainer = (props) => {
+type PageContainerProps = {
+    children: React.ReactNode
+};
+
+type CustomWrapperProps = {
+    children: React.ReactNode
+};
+
+type FormInputLineProps = {
+    inputLabel: string,
+    variableName: string,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    value: string,
+    type?: string
+};
+
+export const PageContainer = (props: PageContainerProps) => {
     return (
         <div className="container-login">
             {props.children}
@@ -8,7 +25,7 @@ export const PageContainer = (props) => {
     )
 }
 
-export const CustomWrapper = (props) => {
+export const CustomWrapper = (props: CustomWrapperProps) => {
     return (
         <div className="wrap-login">
             {props.children}
@@ -16,7 +33,7 @@ export const CustomWrapper = (props) => {
     )
 }
 
-export const FormInputLine = (props) => {
+export const FormInputLine = (props: FormInputLineProps) => {
 
     return (
         <div className="wrap-input">

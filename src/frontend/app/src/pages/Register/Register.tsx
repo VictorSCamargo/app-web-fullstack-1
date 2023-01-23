@@ -1,23 +1,24 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { FormInputLine, PageContainer, CustomWrapper } from "../../components/layout_components/LayoutComponents";
+import { FormInputLine, PageContainer, CustomWrapper } from "../../components/layout_components/LayoutComponents"
 import { FetchMethods } from "../../hooks/FetchMethods/FetchMethods";
 import { BackendPaths } from "../../hooks/BackendPaths/BackendPaths";
 import { AlertMessages } from "../../utils/AlertMessages";
 import { SucessMessages } from "../../utils/SucessMessages";
+import React from "react";
 
-export const Alterar = () => {
-  const [username, setUsername] = useState("");
+export const Register = () => {
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
 
   const [alertMessage, setAlertMessage] = useState(AlertMessages.vazio);
-  const [sucessMessage, setSucessMessage] = useState(SucessMessages.vazio);
+  const [sucessMessage, setSucessMessage] = useState("");
 
-  async function requisitarAlteracaoDeSenha(event) {
+  async function criaUsuario(event: { preventDefault: () => void; }) {
     event.preventDefault();
 
-    console.log("requisitarAlteracaoDeSenha...")
+    console.log("criaUsuario...");
 
     if( (username === "") || (password === "") || (confirmpassword === "") ) {
       console.log(AlertMessages.preenchaTodosOsCampos);
@@ -29,8 +30,9 @@ export const Alterar = () => {
       setAlertMessage(AlertMessages.senhasEstaoDiferentes);
       return;
     }
+
     setAlertMessage(AlertMessages.vazio);
-    setSucessMessage(SucessMessages.vazio);
+    setSucessMessage("");
 
     const data_to_send = {
         "username": username,
@@ -38,21 +40,21 @@ export const Alterar = () => {
     };
     console.log("Dados de envio:", data_to_send);
 
-    const caminho = BackendPaths.updatePasswordUrl;
+    const caminho = BackendPaths.usersUrl;
     console.log("Caminho:", caminho);
 
     const response = await FetchMethods.post(caminho, data_to_send);
     console.log("Resposta:", response);
 
     if(!response) {
-      setAlertMessage(AlertMessages.comunicacaoFalhou);
+      setAlertMessage(AlertMessages.comunicacaoFalhou)
     }
     else {
       const dados = await response.json();
-      console.log("Dados de resposta:", dados);
+      console.log("Dados da resposta:", dados);
 
-      if(response.status !== 200) {
-        console.log("Status da resposta diferente de 200:", dados.message);
+      if( response.status !== 201 ) {
+        console.log("Status da resposta diferente de 201:", dados.message);
 
         if(dados.message) {
           setAlertMessage(dados.message);
@@ -62,8 +64,8 @@ export const Alterar = () => {
         }
       }
       else {
-        setSucessMessage(SucessMessages.senhaAlterada);
-        console.log(SucessMessages.senhaAlterada);
+        console.log(SucessMessages.contaCriada);
+        setSucessMessage(SucessMessages.contaCriada);
       }
     }
   }
@@ -71,21 +73,21 @@ export const Alterar = () => {
   return (
     <PageContainer>
       <CustomWrapper>
-        <form className="login-form" onSubmit={requisitarAlteracaoDeSenha} data-testid="form-alterar">
-          <span className="login-form-title">Alterar Senha</span>
+        <form className="login-form" onSubmit={criaUsuario} data-testid="form-register">
+          <span className="login-form-title">Criar Conta</span>
 
           <FormInputLine
             inputLabel="Username"
             variableName="usernameInput"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
           />
 
           <FormInputLine
             inputLabel="Password"
             variableName="passwordInput"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             type="password"
           />
 
@@ -93,14 +95,12 @@ export const Alterar = () => {
             inputLabel="Confirm password"
             variableName="confirmpasswordInput"
             value={confirmpassword}
-            onChange={(e) => setConfirmpassword(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmpassword(e.target.value)}
             type="password"
           />
 
           <div className="container-login-form-btn">
-            <button className="login-form-btn" type="submit">
-              Confirmar
-            </button>
+            <button className="login-form-btn" type="submit">Cadastrar</button>
           </div>
 
           {(alertMessage !== "") ? (
@@ -129,5 +129,5 @@ export const Alterar = () => {
         </form>
       </CustomWrapper>
     </PageContainer>
-  );
-};
+  )
+}

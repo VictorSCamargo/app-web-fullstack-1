@@ -5,6 +5,7 @@ import { FetchMethods } from "../../hooks/FetchMethods/FetchMethods";
 import { BackendPaths } from "../../hooks/BackendPaths/BackendPaths";
 import { AlertMessages } from "../../utils/AlertMessages";
 import { SucessMessages } from "../../utils/SucessMessages";
+import React from "react";
 
 export const Register = () => {
   const [password, setPassword] = useState("");
@@ -14,7 +15,7 @@ export const Register = () => {
   const [alertMessage, setAlertMessage] = useState(AlertMessages.vazio);
   const [sucessMessage, setSucessMessage] = useState("");
 
-  async function criaUsuario(event) {
+  async function criaUsuario(event: { preventDefault: () => void; }) {
     event.preventDefault();
 
     console.log("criaUsuario...");
@@ -79,14 +80,14 @@ export const Register = () => {
             inputLabel="Username"
             variableName="usernameInput"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
           />
 
           <FormInputLine
             inputLabel="Password"
             variableName="passwordInput"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             type="password"
           />
 
@@ -94,7 +95,7 @@ export const Register = () => {
             inputLabel="Confirm password"
             variableName="confirmpasswordInput"
             value={confirmpassword}
-            onChange={(e) => setConfirmpassword(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmpassword(e.target.value)}
             type="password"
           />
 

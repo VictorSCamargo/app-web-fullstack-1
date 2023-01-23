@@ -13,8 +13,8 @@ Protótipo de fórum para compartilhamento de postagens, semelhante ao Twitter, 
 ## Habilidades aplicadas
 
 Utiliza-se para o **frontend**:
-- [Javascript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript) com [ReactJS](https://pt-br.reactjs.org/) framework;
-- [CSS](https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/What_is_CSS) nativo para estilização;
+- [Typescript](https://www.typescriptlang.org/)/[Javascript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript) com [ReactJS](https://pt-br.reactjs.org/) framework;
+- [CSS](https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/What_is_CSS) e [HTML](https://developer.mozilla.org/pt-BR/docs/Web/HTML) nativos para estilização;
 - [Jest](https://jestjs.io/) com [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) para testagem.
 
 Há duas opções construídas para o **backend**:

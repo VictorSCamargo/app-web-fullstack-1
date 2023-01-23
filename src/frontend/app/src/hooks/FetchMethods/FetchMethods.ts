@@ -1,8 +1,12 @@
+import { BackendPath } from "../BackendPaths/BackendPath";
+
+import { UserObjectType } from "../../types/UserObjectType";
+import { PostObjectType } from "../../types/PostObjectType";
 
 export class FetchMethods {
 
-    static async post(url, object) {
-        const requestOptions = {
+    static async post(backendPath: BackendPath, object: UserObjectType | PostObjectType) {
+        const requestOptions: RequestInit = {
             method: "POST",
             mode: 'cors',
             cache: "default",
@@ -13,7 +17,7 @@ export class FetchMethods {
         };
     
         try {
-            const response = await fetch(url, requestOptions);
+            const response = await fetch(backendPath.getPath(), requestOptions);
             return response;
         }
         catch(e) {
@@ -22,9 +26,9 @@ export class FetchMethods {
         }
     }
 
-    static async get(url) {
+    static async get(backendPath: BackendPath) {
         try {    
-            const response = await fetch(url);
+            const response = await fetch(backendPath.getPath());
             return response;
         }
         catch(e) {
@@ -33,18 +37,9 @@ export class FetchMethods {
         }
     }
 
-    static async delete(url) {
-        const requestOptions = {
-            method: "DELETE",
-            mode: 'cors',
-            cache: "default",
-            headers: {
-              'Content-Type': 'application/json'
-            }
-        };
-    
+    static async delete(backendPath: BackendPath) {    
         try {
-            const response = await fetch(url, requestOptions);
+            const response = await fetch(backendPath.getPath());
             return response;
         }
         catch(e) {
@@ -53,8 +48,8 @@ export class FetchMethods {
         }
     }
 
-    static async put(url, object) {
-        const requestOptions = {
+    static async put(backendPath: BackendPath, object: any) {
+        const requestOptions: RequestInit = {
             method: "PUT",
             mode: 'cors',
             cache: "default",
@@ -65,7 +60,7 @@ export class FetchMethods {
         };
     
         try {
-            const response = await fetch(url, requestOptions);
+            const response = await fetch(backendPath.getPath(), requestOptions);
             return response;
         }
         catch(e) {

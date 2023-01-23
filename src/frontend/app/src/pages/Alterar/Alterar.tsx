@@ -5,6 +5,7 @@ import { FetchMethods } from "../../hooks/FetchMethods/FetchMethods";
 import { BackendPaths } from "../../hooks/BackendPaths/BackendPaths";
 import { AlertMessages } from "../../utils/AlertMessages";
 import { SucessMessages } from "../../utils/SucessMessages";
+import React from "react";
 
 export const Alterar = () => {
   const [username, setUsername] = useState("");
@@ -14,7 +15,7 @@ export const Alterar = () => {
   const [alertMessage, setAlertMessage] = useState(AlertMessages.vazio);
   const [sucessMessage, setSucessMessage] = useState(SucessMessages.vazio);
 
-  async function requisitarAlteracaoDeSenha(event) {
+  async function requisitarAlteracaoDeSenha(event: { preventDefault: () => void; }) {
     event.preventDefault();
 
     console.log("requisitarAlteracaoDeSenha...")
